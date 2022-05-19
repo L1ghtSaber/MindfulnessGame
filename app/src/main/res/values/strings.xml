@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MindfulnessGame</string>
+    <string name="mindfulness_game">ИГРА НА ВНИМАТЕЛЬНОСТЬ</string>
+    <string name="levels">УРОВНИ</string>
+    <string name="main_menu">ГЛАВНОЕ МЕНЮ</string>
+    <string name="choose_level">ВЫБЕРИТЕ УРОВЕНЬ</string>
+    <string name="choose">ВЫБРАТЬ</string>
+    <string name="check">ПРОВЕРИТЬ</string>
+    <string name="amount">КОЛИЧЕСТВО:</string>
+</resources>
