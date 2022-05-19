@@ -7,4 +7,5 @@
     <string name="choose">ВЫБРАТЬ</string>
     <string name="check">ПРОВЕРИТЬ</string>
     <string name="amount">КОЛИЧЕСТВО:</string>
+    <string name="save">СОХРАНИТЬ</string>
 </resources>

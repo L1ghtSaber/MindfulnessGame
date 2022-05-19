@@ -87,10 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFinish() {
                         image.setImageResource(R.mipmap.it_cube_logo_background);
                         for (int i = 0; i < level.images.length; i++) {
-                            if (rightAnswers.containsKey(level.images[i])) {
-                                int oldAmount = rightAnswers.get(level.images[i]);
-                                rightAnswers.put(level.images[i], level.number + 1);
-                            }
+                            if (rightAnswers.containsKey(level.images[i])) rightAnswers.put(level.images[i], level.number + 1);
                             else rightAnswers.put(level.images[i], 1);
                         }
 
@@ -101,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         answersArrayList.add(rand, new Answer(R.drawable.ic_baseline_close_24, 0));
                         rightAnswers.put(answersArrayList.get(rand).image, 0);
 
-                        Answer[] answersArray = new Answer[answersArrayList.size()];
-                        for (int i = 0; i < answersArray.length; i++) answersArray[i] = answersArrayList.get(i);
-                        answers.setAdapter(new Answer.Adapter(MainActivity.this, answersArray));
+                        answers.setAdapter(new Answer.Adapter(MainActivity.this, answersArrayList));
                     }
                 }.start();
             }
@@ -146,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
             private final View[] convertView;
 
-            public Adapter(Context context, Answer[] answers) {
+            public Adapter(Context context, ArrayList<Answer> answers) {
                 super(context, R.layout.answer_item, answers);
-                convertView = new View[answers.length];
+                convertView = new View[answers.size()];
             }
 
             public View getView(int position, View convertView, ViewGroup parent) {
