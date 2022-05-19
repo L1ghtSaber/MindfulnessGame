@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < level.images.length; i++) {
                             if (rightAnswers.containsKey(level.images[i])) {
                                 int oldAmount = rightAnswers.get(level.images[i]);
-                                rightAnswers.put(level.images[i], oldAmount + 1);
+                                rightAnswers.put(level.images[i], level.number + 1);
                             }
                             else rightAnswers.put(level.images[i], 1);
                         }

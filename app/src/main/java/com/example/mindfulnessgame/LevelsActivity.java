@@ -38,7 +38,7 @@ public class LevelsActivity extends AppCompatActivity {
     static final String LEVEL_KEY = "level";
 
     Level[] levels = new Level[]{
-            new Level(1000, 1000, SettingsActivity.images.get(SettingsActivity.GEOMETRIC_FIGURES))
+            new Level(1000, 1000, SettingsActivity.images.get(SettingsActivity.GEOMETRIC_FIGURES), 0)
     };
 
     @Override
