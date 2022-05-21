@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    static TreeMap<String, int[]> images = new TreeMap<>();
-
+    static final String ALLOWED_IMAGES = "allowedImages";
     static final String GEOMETRIC_FIGURES = "Геометричесике фигуры";
     static final String LOGOS = "Логотипы";
+
+    static TreeMap<String, int[]> images = new TreeMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +34,10 @@ public class SettingsActivity extends AppCompatActivity {
                 R.mipmap.windows_logo_foreground, R.mipmap.java_logo_foreground, R.mipmap.android_logo_foreground,
                 R.mipmap.jetbrains_logo_foreground
         });
+
+        String allowedImages = "";
+        for (Map.Entry<String, int[]> entry: images.entrySet()) allowedImages += entry.getKey() + "|";
+        MainMenuActivity.editor.putString(ALLOWED_IMAGES, allowedImages);
+        MainMenuActivity.editor.commit();
     }
 }

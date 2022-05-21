@@ -99,9 +99,29 @@ public class MainActivity extends AppCompatActivity {
             public ImageTimer(Context context) {
                 super(context);
                 level.imageOn = true;
-                timer = new CountDownTimer(1000, 1) {
+                timer = new CountDownTimer(1000 * 60, 1) {
                     @Override
                     public void onTick(long millisUntilFinished) {
+                        level.timeCount++;
+
+                        if (level.imageOn) {
+                            if (level.timeCount % level.imageTime == 0) {
+                                level.imageOn = false;
+                                image.setImageResource(0);
+                                level.timeCount = 0;
+                            }
+                        } else {
+                            if (level.timeCount % level.switchTime == 0) {
+                                if (level.currentImageNumber >= level.images.length) {
+                                    onFinish();
+                                    return;
+                                }
+                                level.imageOn = true;
+                                image.setImageResource(level.images[level.currentImageNumber]);
+                                level.currentImageNumber++;
+                                level.timeCount = 0;
+                            }
+                        }
                     }
 
                     @Override
@@ -112,13 +132,15 @@ public class MainActivity extends AppCompatActivity {
                         image.setImageResource(0);
 
                         for (int i = 0; i < level.images.length; i++) {
-                            if (rightAnswers.containsKey(level.images[i]))
-                                rightAnswers.put(level.images[i], level.number + 1);
+                            if (rightAnswers.containsKey(level.images[i])) {
+                                int oldAmount = rightAnswers.get(level.images[i]);
+                                rightAnswers.put(level.images[i], oldAmount + 1);
+                            }
                             else rightAnswers.put(level.images[i], 1);
                         }
 
                         for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
-                            playerAnswers.add(new Answer(entry.getKey(), 0));
+                            playerAnswers.add(new Answer(entry.getKey(), entry.getValue()));
                         Collections.sort(playerAnswers, new Comparator<Answer>() {
                             @Override
                             public int compare(Answer o1, Answer o2) {
@@ -130,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
+                        String out = "" + ((playerAnswers.get(currentAnswer).amount == 0) ? "" : playerAnswers.get(currentAnswer).amount);
+                        answerAmount.setText(out);
+                        cancel();
                     }
                 };
             }
@@ -151,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         else if (currentAnswer >= playerAnswers.size()) currentAnswer = 0;
 
         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
-        String out = "" + ((playerAnswers.get(currentAnswer).amount != 0) ? playerAnswers.get(currentAnswer).amount : "");
+        String out = "" + ((playerAnswers.get(currentAnswer).amount == 0) ? "" : playerAnswers.get(currentAnswer).amount);
         answerAmount.setText(out);
     }
 
