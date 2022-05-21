@@ -55,7 +55,7 @@
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_baseline_settings_24"
+        android:src="@drawable/settings"
         android:background="#f01ff0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

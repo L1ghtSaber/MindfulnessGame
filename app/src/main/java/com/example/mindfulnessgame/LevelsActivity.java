@@ -1,19 +1,13 @@
 package com.example.mindfulnessgame;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -60,7 +54,7 @@ public class LevelsActivity extends AppCompatActivity {
                     if (i1 <= currentUnlockedLevel) {
                         if (chosenLevel != i1) {
                             chosenLevel = i1;
-                            markButton();
+                            selectLevel();
                         }
                         else {
                             levelButtons[i1].setImageResource(R.mipmap.it_cube_logo_background);
@@ -73,10 +67,10 @@ public class LevelsActivity extends AppCompatActivity {
         showBlockedLevels();
     }
 
-    public void markButton() {
+    public void selectLevel() {
         for (int i = 0; i < levelButtons.length; i++) {
             if (i == chosenLevel) {
-                levelButtons[i].setImageResource(R.drawable.ic_baseline_crop_din_100);
+                levelButtons[i].setImageResource(R.drawable.selection);
             } else levelButtons[i].setImageResource(R.mipmap.it_cube_logo_background);
         }
         showBlockedLevels();
@@ -84,7 +78,7 @@ public class LevelsActivity extends AppCompatActivity {
 
     public void showBlockedLevels() {
         for (int i = levelButtons.length - 1; i > currentUnlockedLevel; i--) {
-            levelButtons[i].setImageResource(R.drawable.ic_baseline_close_24);
+            levelButtons[i].setImageResource(R.drawable.cross);
             ((TextView) findViewById(levelNumberIds[i])).setTextColor(getResources().getColor(R.color.light_gray));
         }
     }

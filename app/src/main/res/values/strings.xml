@@ -5,7 +5,6 @@
     <string name="main_menu">ГЛАВНОЕ МЕНЮ</string>
     <string name="choose_level">ВЫБЕРИТЕ УРОВЕНЬ</string>
     <string name="choose">ВЫБРАТЬ</string>
-    <string name="check">ПРОВЕРИТЬ</string>
     <string name="amount">КОЛИЧЕСТВО:</string>
-    <string name="save">СОХРАНИТЬ</string>
+    <string name="check">ПРОВЕРИТЬ</string>
 </resources>

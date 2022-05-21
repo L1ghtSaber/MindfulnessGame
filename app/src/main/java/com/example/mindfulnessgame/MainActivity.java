@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,18 +22,23 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView timerView;
-    ImageView image;
-    ListView answers;
+    ImageView image, answerImage;
+    EditText answerAmount;
+    ImageButton hideBtn;
 
-    static TreeMap<Integer, Integer> rightAnswers = new TreeMap<>();
+    TreeMap<Integer, Integer> rightAnswers = new TreeMap<>();
+    ArrayList<Answer> playerAnswers = new ArrayList<>();
+    Level level;
 
-    int wrongAnswersCount = 0;
+    int wrongAnswersCount;
+    int currentAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +49,27 @@ public class MainActivity extends AppCompatActivity {
         timerView = findViewById(R.id.timer_TV);
         timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
         image = findViewById(R.id.image_IV);
-        answers = findViewById(R.id.answers_LV);
+        answerImage = findViewById(R.id.answer_image_IV);
+        answerAmount = findViewById(R.id.answer_amount_ET);
+        hideBtn = findViewById(R.id.hide_IB);
+        hideBtn.setBackgroundColor(Color.parseColor("#f01ff0"));
+        hideBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+
+        level = (Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL_KEY);
 
         class Timer extends View {
+
+            CountDownTimer timer;
 
             public Timer(Context context) {
                 super(context);
                 final int[] count = {3};
-                CountDownTimer timer = new CountDownTimer(4000, 1000) {
+                timer = new CountDownTimer(4000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (count[0] <= 0) timerView.setText("\n\n\nВПЕРЁД!");
@@ -62,60 +80,89 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         timerView.setText("");
-                        timerView.setBackgroundColor(Color.argb(0,0,0,0));
+                        timerView.setBackgroundColor(Color.argb(0, 0, 0, 0));
 
-                        MainActivity.this.start((Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL_KEY));
+                        MainActivity.this.start();
+                        cancel();
                     }
-                }.start();
+                };
             }
         }
-        Timer timer = new Timer(this);
+        new Timer(this).timer.start();
     }
 
-    public void start(Level level) {
+    public void start() {
         class ImageTimer extends View {
+
+            CountDownTimer timer;
 
             public ImageTimer(Context context) {
                 super(context);
                 level.imageOn = true;
-                CountDownTimer timer = new CountDownTimer(1000, 1) {
+                timer = new CountDownTimer(1000, 1) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
 
                     @Override
                     public void onFinish() {
-                        image.setImageResource(R.mipmap.it_cube_logo_background);
+                        hideBtn.setBackgroundColor(0);
+                        hideBtn.setClickable(false);
+
+                        image.setImageResource(0);
+
                         for (int i = 0; i < level.images.length; i++) {
-                            if (rightAnswers.containsKey(level.images[i])) rightAnswers.put(level.images[i], level.number + 1);
+                            if (rightAnswers.containsKey(level.images[i]))
+                                rightAnswers.put(level.images[i], level.number + 1);
                             else rightAnswers.put(level.images[i], 1);
                         }
 
-                        ArrayList<Answer> answersArrayList = new ArrayList<>();
                         for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
-                            answersArrayList.add(new Answer(entry.getKey(), entry.getValue()));
-                        int rand = (int) (Math.random() * answersArrayList.size());
-                        answersArrayList.add(rand, new Answer(R.drawable.ic_baseline_close_24, 0));
-                        rightAnswers.put(answersArrayList.get(rand).image, 0);
+                            playerAnswers.add(new Answer(entry.getKey(), 0));
+                        Collections.sort(playerAnswers, new Comparator<Answer>() {
+                            @Override
+                            public int compare(Answer o1, Answer o2) {
+                                int r = (int) (Math.random() * 3);
+                                if (r == 0) return -1;
+                                else if (r == 1) return 0;
+                                else return 1;
+                            }
+                        });
 
-                        answers.setAdapter(new Answer.Adapter(MainActivity.this, answersArrayList));
+                        answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
                     }
-                }.start();
+                };
             }
         }
-        ImageTimer imageTimer = new ImageTimer(this);
+        new ImageTimer(this).timer.start();
+    }
+
+    public void changeLevelImage(View view) {
+        try {
+            playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
+        } catch (IllegalStateException | NumberFormatException e) {
+            answerAmount.setText("");
+        }
+
+        if (view.getId() == R.id.previous_image_IB) currentAnswer--;
+        else if (view.getId() == R.id.next_image_IB) currentAnswer++;
+
+        if (currentAnswer < 0) currentAnswer = playerAnswers.size() - 1;
+        else if (currentAnswer >= playerAnswers.size()) currentAnswer = 0;
+
+        answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
+        String out = "" + ((playerAnswers.get(currentAnswer).amount != 0) ? playerAnswers.get(currentAnswer).amount : "");
+        answerAmount.setText(out);
     }
 
     public void checkAnswers(View view) {
-        if (answers.getAdapter() == null) return;
-
-        Answer.Adapter adapter = (Answer.Adapter) answers.getAdapter();
-        TreeMap<Integer, Integer> playerAnswers = adapter.getPlayerAnswers();
+        TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
+        for (int i = 0; i < this.playerAnswers.size(); i++)
+            playerAnswers.put(this.playerAnswers.get(i).image, this.playerAnswers.get(i).amount);
 
         if (playerAnswers.entrySet().equals(rightAnswers.entrySet())) {
             Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
-            int oldUnlockedLevel = MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0);
-            MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, oldUnlockedLevel + 1);
+            MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, level.number + 1);
             MainMenuActivity.editor.commit();
             finish();
         } else {
@@ -123,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
             if (wrongAnswersCount >= 3) {
                 Toast.makeText(this, "ВАМ НЕ УДАЛОСЬ ПРОЙТИ ЭТОТ УРОВЕНЬ =(\nПОПРОБУЙТЕ СНОВА", Toast.LENGTH_LONG).show();
                 finish();
-            } else Toast.makeText(this, "ВАШ ОТВЕТ НЕПРАВИЛЬНЫЙ\nПОПРОБУЙТЕ СНОВА", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(this, "ВАШ ОТВЕТ НЕПРАВИЛЬНЫЙ\nПОПРОБУЙТЕ СНОВА", Toast.LENGTH_LONG).show();
         }
     }
-
 
     static class Answer {
         int image;
@@ -136,35 +183,37 @@ public class MainActivity extends AppCompatActivity {
             this.image = image;
             this.amount = amount;
         }
-
-        static class Adapter extends ArrayAdapter<Answer> {
-
-            private final View[] convertView;
-
-            public Adapter(Context context, ArrayList<Answer> answers) {
-                super(context, R.layout.answer_item, answers);
-                convertView = new View[answers.size()];
-            }
-
-            public View getView(int position, View convertView, ViewGroup parent) {
-                final Answer answer = getItem(position);
-                if (convertView == null)
-                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.answer_item, null);
-
-                ((ImageView) convertView.findViewById(R.id.answer_image_IV)).setImageResource(answer.image);
-
-                this.convertView[position] = convertView;
-                return convertView;
-            }
-
-            public TreeMap<Integer, Integer> getPlayerAnswers() {
-                TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
-                for (int i = 0; i < this.getCount(); i++) {
-                    int amount = Integer.parseInt(((EditText) convertView[i].findViewById(R.id.answer_amount_ET)).getText().toString());
-                    playerAnswers.put(this.getItem(i).image, amount);
-                }
-                return playerAnswers;
-            }
-        }
     }
+
+//        static class Adapter extends ArrayAdapter<Answer> {
+//
+//            TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
+//
+//            public Adapter(Context context, ArrayList<Answer> answers) {
+//                super(context, R.layout.answer_item, answers);
+//            }
+//
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                final Answer answer = getItem(position);
+//                playerAnswers.put(answer.image, answer.amount);
+//                if (convertView == null)
+//                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.answer_item, null);
+//
+//                final View convertViewF = convertView;
+//                ((ImageView) convertView.findViewById(R.id.answer_image_IV)).setImageResource(answer.image);
+//
+//                ((ImageButton) convertView.findViewById(R.id.save_IB)).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        EditText playerAnswer = convertViewF.findViewById(R.id.answer_amount_ET);
+//                        playerAnswers.put(answer.image, Integer.parseInt(playerAnswer.getText().toString()));
+//                        TextView isSaved = convertViewF.findViewById(R.id.is_saved_TV);
+//                        isSaved.setText("СОХРАНЕНО");
+//                        isSaved.setTextColor(Color.parseColor("#20ad03"));
+//                    }
+//                });
+//
+//                return convertViewF;
+//            }
+//        }
 }
