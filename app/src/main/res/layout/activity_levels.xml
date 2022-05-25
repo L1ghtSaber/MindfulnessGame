@@ -65,14 +65,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button1"
+                    android:id="@+id/level_1_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number1_TV"
+                    android:id="@+id/level_1_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -89,14 +89,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button2"
+                    android:id="@+id/level_2_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number2_TV"
+                    android:id="@+id/level_2_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -113,14 +113,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button3"
+                    android:id="@+id/level_3_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number3_TV"
+                    android:id="@+id/level_3_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -141,14 +141,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button4"
+                    android:id="@+id/level_4_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number4_TV"
+                    android:id="@+id/level_4_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -165,14 +165,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button5"
+                    android:id="@+id/level_5_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number5_TV"
+                    android:id="@+id/level_5_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -189,14 +189,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button6"
+                    android:id="@+id/level_6_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number6_TV"
+                    android:id="@+id/level_6_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -217,14 +217,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button7"
+                    android:id="@+id/level_7_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number7_TV"
+                    android:id="@+id/level_7_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -241,14 +241,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button8"
+                    android:id="@+id/level_8_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number8_TV"
+                    android:id="@+id/level_8_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -265,14 +265,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button9"
+                    android:id="@+id/level_9_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number9_TV"
+                    android:id="@+id/level_9_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
@@ -297,14 +297,14 @@
                 android:layout_height="110dp">
 
                 <ImageButton
-                    android:id="@+id/level_button10"
+                    android:id="@+id/level_10_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
                     android:background="@drawable/rounded_shape"/>
 
                 <TextView
-                    android:id="@+id/level_number10_TV"
+                    android:id="@+id/level_10_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"

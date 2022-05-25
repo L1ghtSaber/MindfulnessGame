@@ -1,28 +1,20 @@
 package com.example.mindfulnessgame;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -67,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         class Timer extends View {
 
-            CountDownTimer timer;
+            final CountDownTimer timer;
 
             public Timer(Context context) {
                 super(context);
@@ -75,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 timer = new CountDownTimer(4000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        if (count[0] <= 0) timerView.setText("\n\n\nВПЕРЁД!");
-                        else timerView.setText("\n\n\n" + count[0]);
+                        String out = "\n\n\n" + ((count[0] <= 0) ? "ВПЕРЁД!" : count[0]);
+                        timerView.setText(out);
                         count[0]--;
                     }
 
@@ -98,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void start() {
         class ImageTimer extends View {
 
-            CountDownTimer timer;
+            final CountDownTimer timer;
 
             public ImageTimer(Context context) {
                 super(context);
@@ -138,12 +130,15 @@ public class MainActivity extends AppCompatActivity {
                             if (rightAnswers.containsKey(level.images[i])) {
                                 int oldAmount = rightAnswers.get(level.images[i]);
                                 rightAnswers.put(level.images[i], oldAmount + 1);
+                                level.allowedImages.remove((Integer) level.images[i]);
                             }
                             else rightAnswers.put(level.images[i], 1);
                         }
+                        int r = (int) (Math.random() * level.allowedImages.size());
+                        rightAnswers.put(level.allowedImages.get(r)[(int) (Math.random() * level.allowedImages.get(r).length)], 0);
 
                         for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
-                            playerAnswers.add(new Answer(entry.getKey(), entry.getValue()));
+                            playerAnswers.add(new Answer(entry.getKey(), 0));
                         Collections.sort(playerAnswers, new Comparator<Answer>() {
                             @Override
                             public int compare(Answer o1, Answer o2) {
@@ -166,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeLevelImage(View view) {
+        MainMenuActivity.playClickSound(this);
+
         try {
             playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
         } catch (IllegalStateException | NumberFormatException e) {
@@ -184,7 +181,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkAnswers(View view) {
+        MainMenuActivity.playClickSound(this);
+
         if (playerAnswers.isEmpty()) return;
+        try {
+            playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
+        } catch (IllegalStateException | NumberFormatException e) {
+            return;
+        }
 
         TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
         for (int i = 0; i < this.playerAnswers.size(); i++)
@@ -208,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void exitToMainMenu(View view) {
+        MainMenuActivity.playClickSound(this);
         finish();
     }
 

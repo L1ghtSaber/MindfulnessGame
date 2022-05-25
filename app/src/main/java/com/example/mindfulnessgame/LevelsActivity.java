@@ -1,16 +1,16 @@
 package com.example.mindfulnessgame;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -18,18 +18,18 @@ public class LevelsActivity extends AppCompatActivity {
 
     Intent main;
     int[] levelButtonIds = new int[] {
-            R.id.level_button1, R.id.level_button2,
-            R.id.level_button3, R.id.level_button4,
-            R.id.level_button5, R.id.level_button6,
-            R.id.level_button7, R.id.level_button8,
-            R.id.level_button9, R.id.level_button10
+            R.id.level_1_IB, R.id.level_2_IB,
+            R.id.level_3_IB, R.id.level_4_IB,
+            R.id.level_5_IB, R.id.level_6_IB,
+            R.id.level_7_IB, R.id.level_8_IB,
+            R.id.level_9_IB, R.id.level_10_IB
     };
     int[] levelNumberIds = new int[] {
-            R.id.level_number1_TV, R.id.level_number2_TV,
-            R.id.level_number3_TV, R.id.level_number4_TV,
-            R.id.level_number5_TV, R.id.level_number6_TV,
-            R.id.level_number7_TV, R.id.level_number8_TV,
-            R.id.level_number9_TV, R.id.level_number10_TV
+            R.id.level_1_TV, R.id.level_2_TV,
+            R.id.level_3_TV, R.id.level_4_TV,
+            R.id.level_5_TV, R.id.level_6_TV,
+            R.id.level_7_TV, R.id.level_8_TV,
+            R.id.level_9_TV, R.id.level_10_TV
     };
     ImageButton[] levelButtons = new ImageButton[levelButtonIds.length];
 
@@ -44,7 +44,6 @@ public class LevelsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_levels);
 
         main = new Intent(LevelsActivity.this, MainActivity.class);
-        int currentUnlockedLevel = MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0);
 
         for (int i = 0; i < levelButtons.length; i++) levelButtons[i] = findViewById(levelButtonIds[i]);
 
@@ -53,15 +52,14 @@ public class LevelsActivity extends AppCompatActivity {
             levelButtons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (i1 <= currentUnlockedLevel) {
-                        if (chosenLevel != i1) {
-                            chosenLevel = i1;
-                            selectLevel();
-                        }
-                        else {
-                            levelButtons[i1].setImageResource(0);
-                            chosenLevel = -1;
-                        }
+                    MainMenuActivity.playClickSound(LevelsActivity.this);
+
+                    if (chosenLevel != i1) {
+                        chosenLevel = i1;
+                        selectLevel();
+                    } else {
+                        levelButtons[i1].setImageResource(0);
+                        chosenLevel = -1;
                     }
                 }
             });
@@ -76,7 +74,6 @@ public class LevelsActivity extends AppCompatActivity {
                 currentName = "";
             }
         }
-
         showBlockedLevels();
     }
 
@@ -92,11 +89,14 @@ public class LevelsActivity extends AppCompatActivity {
     public void showBlockedLevels() {
         for (int i = levelButtons.length - 1; i > MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0); i--) {
             levelButtons[i].setImageResource(R.drawable.cross);
+            levelButtons[i].setClickable(false);
             ((TextView) findViewById(levelNumberIds[i])).setTextColor(getResources().getColor(R.color.light_gray));
         }
     }
 
     public void chooseLevel(View view) {
+        MainMenuActivity.playClickSound(this);
+
         if (chosenLevel == -1) return;
 
         Level[] levels = new Level[10];
@@ -120,6 +120,7 @@ public class LevelsActivity extends AppCompatActivity {
     }
 
     public void exitToMainMenu(View view) {
+        MainMenuActivity.playClickSound(this);
         finish();
     }
 }

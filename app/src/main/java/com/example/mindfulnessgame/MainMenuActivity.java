@@ -3,10 +3,12 @@ package com.example.mindfulnessgame;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -15,10 +17,10 @@ import android.widget.TextView;
 
 public class MainMenuActivity extends AppCompatActivity {
 
+    static final String CURRENT_UNLOCKED_LEVEL_KEY = "currentUnlockedLevel";
+
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
-
-    static final String CURRENT_UNLOCKED_LEVEL_KEY = "currentUnlockedLevel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +58,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void levels(View view) {
         startActivity(new Intent(this, LevelsActivity.class));
+        playClickSound(this);
     }
 
     public void openSettings(View view) {
         startActivity(new Intent(this, SettingsActivity.class));
+        playClickSound(this);
+    }
+
+    public static void playClickSound(Context context) {
+        MediaPlayer.create(context, R.raw.bubble_click).start();
     }
 }

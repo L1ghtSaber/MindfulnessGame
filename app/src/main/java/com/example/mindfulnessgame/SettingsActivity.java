@@ -1,23 +1,21 @@
 package com.example.mindfulnessgame;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,9 +28,17 @@ public class SettingsActivity extends AppCompatActivity {
     static final String LOGOS = "Логотипы";
 
     ListView bgColors, textBgColors;
+    ImageView chosenColor;
 
     Color[] colors = {
-            new Color("#88008c"), new Color("#f01ff0") // розовые цвета
+            new Color("#f01ff0"), new Color("#88008c"), // розовые цвета
+            //new Color("#fbff00"), new Color("#c4c702"), // жёлтые; с тёмной темой они превращаются в оттенки г-на, поэтому я их отключил
+            new Color("#2668ff"), new Color("#2403fc"), // синие
+            new Color("#18d902"), new Color("#11ad00"), // зелёные
+            new Color("#e30b00"), new Color("#ad0900"), // красные
+            new Color("#aa00e3"), new Color("#7c00c9"), // фиолетовые
+            new Color("#00e3c5"), new Color("#00baa1"), // бирюзовые
+            new Color("#5c5c5c"), new Color("#2b2b2b")  // серые
     };
 
     static TreeMap<String, int[]> images = new TreeMap<>();
@@ -46,31 +52,31 @@ public class SettingsActivity extends AppCompatActivity {
         Color[] backgroundColors = new Color[colors.length];
         for (int i = 0; i < backgroundColors.length; i++) backgroundColors[i] = new Color(colors[i].resource);
         String bgColor = MainMenuActivity.preferences.getString(BACKGROUND_COLOR, "#f01ff0");
-        for (int i = 0; i < backgroundColors.length; i++) {
-            if (backgroundColors[i].resource.equals(bgColor)) {
-                backgroundColors[i].isSelected = true;
-                Color color = backgroundColors[0];
-                backgroundColors[0] = backgroundColors[i];
-                backgroundColors[i] = color;
+        for (Color backgroundColor: backgroundColors) {
+            if (backgroundColor.resource.equals(bgColor)) {
+                backgroundColor.isSelected = true;
+                break;
             }
         }
+        chosenColor = findViewById(R.id.chosen_color_bg_IV);
+        chosenColor.setBackgroundColor(android.graphics.Color.parseColor(bgColor));
         bgColors = findViewById(R.id.bg_colors_LV);
-        bgColors.setAdapter(new Color.Adapter(this, backgroundColors));
+        bgColors.setAdapter(new Color("").new Adapter(this, backgroundColors, chosenColor));
 
 
         Color[] textBackgroundColors = new Color[colors.length];
         for (int i = 0; i < textBackgroundColors.length; i++) textBackgroundColors[i] = new Color(colors[i].resource);
         String textBgColor = MainMenuActivity.preferences.getString(TEXT_BACKGROUND_COLOR, "#88008c");
-        for (int i = 0; i < textBackgroundColors.length; i++) {
-            if (textBackgroundColors[i].resource.equals(textBgColor)) {
-                textBackgroundColors[i].isSelected = true;
-                Color color = textBackgroundColors[0];
-                textBackgroundColors[0] = textBackgroundColors[i];
-                textBackgroundColors[i] = color;
+        for (Color textBackgroundColor: textBackgroundColors) {
+            if (textBackgroundColor.resource.equals(textBgColor)) {
+                textBackgroundColor.isSelected = true;
+                break;
             }
         }
+        chosenColor = findViewById(R.id.chosen_color_text_bg_IV);
+        chosenColor.setBackgroundColor(android.graphics.Color.parseColor(textBgColor));
         textBgColors = findViewById(R.id.text_bg_colors_LV);
-        textBgColors.setAdapter(new Color.Adapter(this, textBackgroundColors));
+        textBgColors.setAdapter(new Color("").new Adapter(this, textBackgroundColors, chosenColor));
     }
 
     public static void fillImages() {
@@ -94,10 +100,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void exitToMainMenu(View view) {
+        MainMenuActivity.playClickSound(this);
         finish();
     }
 
     public void saveChanges(View view) {
+        MainMenuActivity.playClickSound(this);
+
         Color.Adapter adapter = (Color.Adapter) bgColors.getAdapter();
         String chosenColor = "";
         for (int i = 0; i < adapter.getCount(); i++) {
@@ -120,8 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
-    static class Color {
-        ImageButton button;
+    class Color {
 
         String resource;
 
@@ -131,34 +139,39 @@ public class SettingsActivity extends AppCompatActivity {
             this.resource = resource;
         }
 
-        static class Adapter extends ArrayAdapter<Color> {
+        class Adapter extends ArrayAdapter<Color> {
+
+            ImageView chosenColor;
 
             Color[] colors;
 
-            public Adapter(Context context, Color[] colors) {
+            public Adapter(Context context, Color[] colors, ImageView chosenColor) {
                 super(context, R.layout.color_item, colors);
                 this.colors = colors;
+                this.chosenColor = chosenColor;
             }
 
+            @SuppressLint("InflateParams")
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 colors[position] = getItem(position);
                 if (convertView == null)
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.color_item, null);
 
-                colors[position].button = convertView.findViewById(R.id.color_IB);
-                colors[position].button.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
-                colors[position].button.setOnClickListener(new View.OnClickListener() {
+                ImageButton select = convertView.findViewById(R.id.color_IB);
+                select.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
+                select.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for (int i = 0; i < colors.length; i++) colors[i].isSelected = false;
+                        MainMenuActivity.playClickSound(SettingsActivity.this);
+
+                        for (Color color: colors) color.isSelected = false;
                         colors[position].isSelected = true;
 
-                        for (int i = 0; i < colors.length; i++) colors[i].button.setImageResource(0);
-                        colors[position].button.setImageResource(R.drawable.check_mark);
+                        chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
                     }
                 });
-                if (colors[position].isSelected) colors[position].button.setImageResource(R.drawable.check_mark);
+                if (colors[position].isSelected) chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
                 return convertView;
             }
         }
