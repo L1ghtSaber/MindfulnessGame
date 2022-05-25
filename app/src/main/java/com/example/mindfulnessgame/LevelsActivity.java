@@ -80,24 +80,6 @@ public class LevelsActivity extends AppCompatActivity {
         showBlockedLevels();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        showBlockedLevels();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showBlockedLevels();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showBlockedLevels();
-    }
-
     public void selectLevel() {
         for (int i = 0; i < levelButtons.length; i++) {
             if (i == chosenLevel) {
@@ -117,14 +99,24 @@ public class LevelsActivity extends AppCompatActivity {
     public void chooseLevel(View view) {
         if (chosenLevel == -1) return;
 
-        Random r = new Random();
-        Level[] levels = new Level[]{
-                new Level(1000, 1000, new int[][]{allowedImages.get(r.nextInt(allowedImages.size()))}, 5, 0),
+        Level[] levels = new Level[10];
+        ArrayList<int[]> images = new ArrayList<>();
+        images.add(allowedImages.get((int) (Math.random() * allowedImages.size())));
+        for (int i = 0, imageTime = 1000, switchTime = 1000, imagesAmount = 3; i < levels.length; i++) {
+            levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i);
 
-        };
+            imageTime -= 100;
+            if ((i + 1) % 2 == 0) switchTime -= 200;
+            if (i == 0 || i == 2 || i == 6) imagesAmount += 2;
+            else if (i == 4 || i == 8) imagesAmount += 3;
+            if ((i + 1) % 3 == 0) images.add(allowedImages.get((int) (Math.random() * allowedImages.size())));
 
+            if (imageTime <= 0) imageTime = 10;
+            if (switchTime <= 0) switchTime = 10;
+        }
         main.putExtra(LEVEL_KEY, levels[chosenLevel]);
         startActivity(main);
+        finish();
     }
 
     public void exitToMainMenu(View view) {

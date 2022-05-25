@@ -1,10 +1,12 @@
 package com.example.mindfulnessgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -48,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         timerView = findViewById(R.id.timer_TV);
         timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
+        timerView.setClickable(true);
         image = findViewById(R.id.image_IV);
         answerImage = findViewById(R.id.answer_image_IV);
         answerAmount = findViewById(R.id.answer_amount_ET);
         hideBtn = findViewById(R.id.hide_IB);
-        hideBtn.setBackgroundColor(Color.parseColor("#f01ff0"));
+        hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
         hideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFinish() {
                         timerView.setText("");
                         timerView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+                        timerView.setClickable(false);
 
                         MainActivity.this.start();
                         cancel();
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
             public ImageTimer(Context context) {
                 super(context);
-                level.imageOn = true;
                 timer = new CountDownTimer(1000 * 60, 1) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -181,14 +184,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkAnswers(View view) {
+        if (playerAnswers.isEmpty()) return;
+
         TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
         for (int i = 0; i < this.playerAnswers.size(); i++)
             playerAnswers.put(this.playerAnswers.get(i).image, this.playerAnswers.get(i).amount);
 
         if (playerAnswers.entrySet().equals(rightAnswers.entrySet())) {
             Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
-            MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, level.number + 1);
-            MainMenuActivity.editor.commit();
+            if (level.number + 1 > MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0)) {
+                MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, level.number + 1);
+                MainMenuActivity.editor.commit();
+            }
             finish();
         } else {
             wrongAnswersCount++;
@@ -200,6 +207,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void exitToMainMenu(View view) {
+        finish();
+    }
+
     static class Answer {
         int image;
         int amount;
@@ -209,36 +220,4 @@ public class MainActivity extends AppCompatActivity {
             this.amount = amount;
         }
     }
-
-//        static class Adapter extends ArrayAdapter<Answer> {
-//
-//            TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
-//
-//            public Adapter(Context context, ArrayList<Answer> answers) {
-//                super(context, R.layout.answer_item, answers);
-//            }
-//
-//            public View getView(int position, View convertView, ViewGroup parent) {
-//                final Answer answer = getItem(position);
-//                playerAnswers.put(answer.image, answer.amount);
-//                if (convertView == null)
-//                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.answer_item, null);
-//
-//                final View convertViewF = convertView;
-//                ((ImageView) convertView.findViewById(R.id.answer_image_IV)).setImageResource(answer.image);
-//
-//                ((ImageButton) convertView.findViewById(R.id.save_IB)).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        EditText playerAnswer = convertViewF.findViewById(R.id.answer_amount_ET);
-//                        playerAnswers.put(answer.image, Integer.parseInt(playerAnswer.getText().toString()));
-//                        TextView isSaved = convertViewF.findViewById(R.id.is_saved_TV);
-//                        isSaved.setText("СОХРАНЕНО");
-//                        isSaved.setTextColor(Color.parseColor("#20ad03"));
-//                    }
-//                });
-//
-//                return convertViewF;
-//            }
-//        }
 }
