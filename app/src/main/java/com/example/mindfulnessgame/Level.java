@@ -33,8 +33,8 @@ public class Level implements Serializable {
         int image = 0;
         while (!isExtra) {
             image = allowedImages.get(rand)[(int) (Math.random() * allowedImages.get(rand).length)];
-            for (int i = 0; i < images.length; i++) {
-                isExtra = image != images[i];
+            for (int img: images) {
+                isExtra = image != img;
                 if (!isExtra) break;
             }
         }

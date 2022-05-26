@@ -2,7 +2,6 @@ package com.example.mindfulnessgame;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -26,6 +23,7 @@ public class LevelsActivity extends AppCompatActivity {
             R.id.level_7_IB, R.id.level_8_IB,
             R.id.level_9_IB, R.id.level_10_IB
     };
+    ImageButton[] levelButtons = new ImageButton[levelButtonIds.length];
     int[] levelNumberIds = new int[] {
             R.id.level_1_TV, R.id.level_2_TV,
             R.id.level_3_TV, R.id.level_4_TV,
@@ -33,7 +31,6 @@ public class LevelsActivity extends AppCompatActivity {
             R.id.level_7_TV, R.id.level_8_TV,
             R.id.level_9_TV, R.id.level_10_TV
     };
-    ImageButton[] levelButtons = new ImageButton[levelButtonIds.length];
 
     int chosenLevel = -1;
 
@@ -96,16 +93,19 @@ public class LevelsActivity extends AppCompatActivity {
             levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i);
 
             imageTime -= 100;
+            if (imageTime <= 0) imageTime = 10;
+
             if ((i + 1) % 2 == 0) switchTime -= 200;
+            if (switchTime <= 0) switchTime = 10;
+
+
             if (i == 0 || i == 2 || i == 6) imagesAmount += 2;
             else if (i == 4 || i == 8) imagesAmount += 3;
-            if ((i + 1) % 3 == 0) images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
 
-            if (imageTime <= 0) imageTime = 10;
-            if (switchTime <= 0) switchTime = 10;
+            if ((i + 1) % 3 == 0) images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
         }
         main.putExtra(LEVEL_KEY, levels[chosenLevel]);
-        main.putExtra(MainMenuActivity.INFINITE_MODE, false);
+        main.putExtra(MainMenuActivity.INFINITE_MODE_KEY, false);
         startActivity(main);
         finish();
     }

@@ -78,21 +78,66 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.2" />
 
-            <EditText
-                android:id="@+id/answer_amount_ET"
+            <LinearLayout
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:background="@drawable/rounded_shape"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:textColor="#d9d9d9"
-                android:textStyle="bold"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.55"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.7" />
+                app:layout_constraintVertical_bias="0.7" >
+
+                <ImageButton
+                    android:id="@+id/amount_minus_IB"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rounded_shape"
+                    android:src="@drawable/minus"
+                    android:onClick="changeAmount"/>
+
+                <TextView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"/>
+
+                <EditText
+                    android:id="@+id/answer_amount_ET"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_shape"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textColor="#d9d9d9"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"/>
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/amount_plus_IB"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_shape"
+                        android:src="@drawable/minus"
+                        android:onClick="changeAmount"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/minus"
+                        android:rotation="90"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/answer_image_IV"
@@ -142,6 +187,21 @@
                 android:background="@mipmap/it_cube_logo_background"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/attempts_left_TV"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="#d9d9d9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.835" />
 
     <FrameLayout
         android:layout_width="200dp"

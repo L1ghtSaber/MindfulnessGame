@@ -2,10 +2,8 @@ package com.example.mindfulnessgame;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,8 +15,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -28,6 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
     ListView bgColors, textBgColors;
     ImageView chosenColor;
 
+    static ArrayList<int[]> images = new ArrayList<>();
     Color[] colors = {
             new Color("#f01ff0"), new Color("#88008c"), // розовые цвета
             //new Color("#fbff00"), new Color("#c4c702"), // жёлтые; с тёмной темой они превращаются в оттенки г-на, поэтому я их отключил
@@ -38,8 +35,6 @@ public class SettingsActivity extends AppCompatActivity {
             new Color("#00e3c5"), new Color("#00baa1"), // бирюзовые
             new Color("#5c5c5c"), new Color("#2b2b2b")  // серые
     };
-
-    static ArrayList<int[]> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void exitToMainMenu(View view) {
         MainMenuActivity.playClickSound(this);
+
         finish();
     }
 

@@ -22,7 +22,7 @@ import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView timerView;
+    TextView timerView, attemptsLeft;
     ImageView image, answerImage;
     EditText answerAmount;
     ImageButton hideBtn;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         timerView = findViewById(R.id.timer_TV);
         timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
         timerView.setClickable(true);
+        attemptsLeft = findViewById(R.id.attempts_left_TV);
         image = findViewById(R.id.image_IV);
         answerImage = findViewById(R.id.answer_image_IV);
         answerAmount = findViewById(R.id.answer_amount_ET);
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         level = (Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL_KEY);
-        infiniteMode = getIntent().getBooleanExtra(MainMenuActivity.INFINITE_MODE, false);
+        infiniteMode = getIntent().getBooleanExtra(MainMenuActivity.INFINITE_MODE_KEY, false);
 
         class Timer extends View {
 
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             public ImageTimer(Context context) {
                 super(context);
-                timer = new CountDownTimer(1000 * 60, 1) {
+                timer = new CountDownTimer(1000 * 60 * 60, 1) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         if (level.imageOn) {
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFinish() {
                         hideBtn.setBackgroundColor(0);
                         hideBtn.setClickable(false);
-
+                        answerAmount.setCursorVisible(true);
                         image.setImageResource(0);
 
                         for (int i = 0; i < level.images.length; i++) {
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         rightAnswers.put(level.getExtraImage(), 0);
 
                         for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
-                            playerAnswers.add(new Answer(entry.getKey(), -1));
+                            playerAnswers.add(new Answer(entry.getKey(), 0));
                         Collections.sort(playerAnswers, new Comparator<Answer>() {
                             @Override
                             public int compare(Answer o1, Answer o2) {
@@ -149,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
+                        String out = "" + playerAnswers.get(currentAnswer).amount;
+                        answerAmount.setText(out);
+
                         cancel();
                     }
                 };
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
         } catch (IllegalStateException | NumberFormatException e) {
-            answerAmount.setText("");
+            answerAmount.setText("0");
         }
 
         if (view.getId() == R.id.previous_image_IB) currentAnswer--;
@@ -173,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         else if (currentAnswer >= playerAnswers.size()) currentAnswer = 0;
 
         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
-        String out = "" + ((playerAnswers.get(currentAnswer).amount == -1) ? "" : playerAnswers.get(currentAnswer).amount);
+        String out = "" + playerAnswers.get(currentAnswer).amount;
         answerAmount.setText(out);
     }
 
@@ -192,11 +196,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < this.playerAnswers.size(); i++)
             playerAnswers.put(this.playerAnswers.get(i).image, this.playerAnswers.get(i).amount);
 
-        if (playerAnswers.containsValue(-1)) {
-            Toast.makeText(this, "УПС!\nВЫ ЗАПОЛНИЛИ НЕ ВСЕ ПОЛЯ ОТВЕТОВ", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (playerAnswers.entrySet().equals(rightAnswers.entrySet())) {
             if (!infiniteMode) {
                 Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
@@ -206,9 +205,36 @@ public class MainActivity extends AppCompatActivity {
                 }
                 finish();
             }
+            else {
+                level.imageTime -= 10;
+                if (level.imageTime <= 0) level.imageTime = 1;
+
+                if (level.number % 2 == 0) level.switchTime -= 20;
+                if (level.switchTime <= 0) level.switchTime = 1;
+
+                if (level.number % 4 == 0) level.allowedImages.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
+
+                int amount = level.images.length;
+                if (level.number % 3 == 0) amount++;
+
+                level = new Level(level.imageTime, level.switchTime, level.allowedImages, amount, level.number);
+                rightAnswers.clear();
+                this.playerAnswers.clear();
+                hideBtn.setClickable(true);
+                hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
+                answerAmount.setCursorVisible(false);
+
+                start();
+            }
         } else {
             wrongAnswersCount++;
-            if (wrongAnswersCount >= 3) {
+
+            attemptsLeft.setBackground(answerAmount.getBackground());
+            answerAmount.setBackground(answerAmount.getBackground());
+            String out = "П О П Ы Т О К   О С Т А Л О С Ь :   " + (((infiniteMode) ? 5 : 3) - wrongAnswersCount);
+            attemptsLeft.setText(out);
+
+            if (wrongAnswersCount >= ((infiniteMode) ? 5 : 3)) {
                 Toast.makeText(this, "ВАМ НЕ УДАЛОСЬ ПРОЙТИ ЭТОТ УРОВЕНЬ =(\nПОПРОБУЙТЕ СНОВА", Toast.LENGTH_LONG).show();
                 finish();
             } else
@@ -219,6 +245,18 @@ public class MainActivity extends AppCompatActivity {
     public void exitToMainMenu(View view) {
         MainMenuActivity.playClickSound(this);
         finish();
+    }
+
+    public void changeAmount(View view) {
+        MainMenuActivity.playClickSound(this);
+
+        if (view.getId() == R.id.amount_minus_IB) playerAnswers.get(currentAnswer).amount--;
+        else if (view.getId() == R.id.amount_plus_IB) playerAnswers.get(currentAnswer).amount++;
+
+        if (playerAnswers.get(currentAnswer).amount < 0) playerAnswers.get(currentAnswer).amount = 0;
+
+        String out = "" + playerAnswers.get(currentAnswer).amount;
+        answerAmount.setText(out);
     }
 
     static class Answer {
