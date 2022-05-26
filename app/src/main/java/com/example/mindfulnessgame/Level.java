@@ -3,10 +3,11 @@ package com.example.mindfulnessgame;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
 public class Level implements Serializable {
 
-    ArrayList<int[]> allowedImages;
-    Integer[] images;
+    ArrayList<int[]> allowedImages = new ArrayList<>();
+    int[] images;
 
     int imageTime, switchTime, timeCount;
     boolean imageOn;
@@ -16,11 +17,11 @@ public class Level implements Serializable {
     public Level(int imageTime, int switchTime, ArrayList<int[]> allowedImages, int imagesAmount, int number) {
         this.imageTime = imageTime;
         this.switchTime = switchTime;
-        this.allowedImages = allowedImages;
-        images = new Integer[imagesAmount];
+        this.allowedImages.addAll(allowedImages);
+        images = new int[imagesAmount];
         for (int i = 0; i < images.length; i++) {
-            int rand1 = (int) (Math.random() * allowedImages.size()),
-                    rand2 = (int) (Math.random() * allowedImages.get(rand1).length);
+            int rand1 = (int) (Math.random() * this.allowedImages.size()),
+                    rand2 = (int) (Math.random() * this.allowedImages.get(rand1).length);
             images[i] = allowedImages.get(rand1)[rand2];
         }
         this.number = number;
