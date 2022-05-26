@@ -11,4 +11,5 @@
     <string name="text_bg_color">ЦВЕТ ФОНА ТЕКСТА</string>
     <string name="save_changes">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
     <string name="chosen_color">ВЫБРАННЫЙ ЦВЕТ</string>
+    <string name="infinite_mode">БЕСКОНЕЧНЫЙ РЕЖИМ</string>
 </resources>

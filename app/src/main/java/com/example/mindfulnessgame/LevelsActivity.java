@@ -35,8 +35,6 @@ public class LevelsActivity extends AppCompatActivity {
     };
     ImageButton[] levelButtons = new ImageButton[levelButtonIds.length];
 
-    ArrayList<int[]> allowedImages = new ArrayList<>();
-
     int chosenLevel = -1;
 
     @Override
@@ -66,16 +64,6 @@ public class LevelsActivity extends AppCompatActivity {
                 }
             });
         }
-
-        String groupNames = MainMenuActivity.preferences.getString(SettingsActivity.ALLOWED_IMAGES, "");
-        String currentName = "";
-        for (int i = 0; i < groupNames.length(); i++) {
-            if (groupNames.charAt(i) != '|') currentName += groupNames.charAt(i);
-            else {
-                allowedImages.add(SettingsActivity.images.get(currentName));
-                currentName = "";
-            }
-        }
         showBlockedLevels();
     }
 
@@ -103,7 +91,7 @@ public class LevelsActivity extends AppCompatActivity {
 
         Level[] levels = new Level[10];
         ArrayList<int[]> images = new ArrayList<>();
-        images.add(allowedImages.get((int) (Math.random() * allowedImages.size())));
+        images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
         for (int i = 0, imageTime = 1000, switchTime = 1000, imagesAmount = 3; i < levels.length; i++) {
             levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i);
 
@@ -111,12 +99,13 @@ public class LevelsActivity extends AppCompatActivity {
             if ((i + 1) % 2 == 0) switchTime -= 200;
             if (i == 0 || i == 2 || i == 6) imagesAmount += 2;
             else if (i == 4 || i == 8) imagesAmount += 3;
-            if ((i + 1) % 3 == 0) images.add(allowedImages.get((int) (Math.random() * allowedImages.size())));
+            if ((i + 1) % 3 == 0) images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
 
             if (imageTime <= 0) imageTime = 10;
             if (switchTime <= 0) switchTime = 10;
         }
         main.putExtra(LEVEL_KEY, levels[chosenLevel]);
+        main.putExtra(MainMenuActivity.INFINITE_MODE, false);
         startActivity(main);
         finish();
     }

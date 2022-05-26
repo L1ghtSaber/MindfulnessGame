@@ -15,9 +15,14 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class MainMenuActivity extends AppCompatActivity {
 
     static final String CURRENT_UNLOCKED_LEVEL_KEY = "currentUnlockedLevel";
+    static final String INFINITE_MODE = "infiniteMode";
 
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
@@ -52,18 +57,33 @@ public class MainMenuActivity extends AppCompatActivity {
         roundedShape = (GradientDrawable) ((ImageButton) findViewById(R.id.levels_IB)).getBackground();
         roundedShape.setColor(Color.parseColor(preferences.getString(SettingsActivity.TEXT_BACKGROUND_COLOR, "#88008c")));
 
+        ((ImageButton) findViewById(R.id.infinite_mode_IB)).setBackground(roundedShape);
+
         roundedShape = (GradientDrawable) ((ImageButton) findViewById(R.id.settings_IB)).getBackground();
         roundedShape.setColor(Color.parseColor(preferences.getString(SettingsActivity.TEXT_BACKGROUND_COLOR, "#88008c")));
     }
 
-    public void levels(View view) {
-        startActivity(new Intent(this, LevelsActivity.class));
+    public void openLevels(View view) {
         playClickSound(this);
+
+        startActivity(new Intent(this, LevelsActivity.class));
     }
 
     public void openSettings(View view) {
-        startActivity(new Intent(this, SettingsActivity.class));
         playClickSound(this);
+
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
+
+    public void startInfiniteGame(View view) {
+        playClickSound(this);
+
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.putExtra(LevelsActivity.LEVEL_KEY, new Level(2000, 2000,
+                new ArrayList<>(Collections.singletonList(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())))),
+                1, 0));
+        mainActivity.putExtra(INFINITE_MODE, true);
+        startActivity(mainActivity);
     }
 
     public static void playClickSound(Context context) {

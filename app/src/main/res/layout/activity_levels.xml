@@ -290,7 +290,17 @@
 
             <FrameLayout
                 android:layout_width="110dp"
-                android:layout_height="110dp"/>
+                android:layout_height="110dp"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/rounded_shape"
+                    android:rotation="270"
+                    android:src="@drawable/arrow"/>
+
+            </FrameLayout>
 
             <FrameLayout
                 android:layout_width="110dp"
@@ -313,6 +323,20 @@
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
                     android:gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/rounded_shape"
+                    android:rotation="90"
+                    android:src="@drawable/arrow"/>
 
             </FrameLayout>
 

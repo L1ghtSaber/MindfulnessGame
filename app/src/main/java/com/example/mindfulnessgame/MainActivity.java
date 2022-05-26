@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     int wrongAnswersCount;
     int currentAnswer;
+    boolean infiniteMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         level = (Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL_KEY);
+        infiniteMode = getIntent().getBooleanExtra(MainMenuActivity.INFINITE_MODE, false);
 
         class Timer extends View {
 
@@ -97,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 timer = new CountDownTimer(1000 * 60, 1) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        level.timeCount++;
-
                         if (level.imageOn) {
                             if (level.timeCount % level.imageTime == 0) {
                                 level.imageOn = false;
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                                 level.timeCount = 0;
                             }
                         }
+                        level.timeCount++;
                     }
 
                     @Override
@@ -197,12 +198,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (playerAnswers.entrySet().equals(rightAnswers.entrySet())) {
-            Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
-            if (level.number + 1 > MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0)) {
-                MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, level.number + 1);
-                MainMenuActivity.editor.commit();
+            if (!infiniteMode) {
+                Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
+                if (level.number + 1 > MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0)) {
+                    MainMenuActivity.editor.putInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, level.number + 1);
+                    MainMenuActivity.editor.commit();
+                }
+                finish();
             }
-            finish();
         } else {
             wrongAnswersCount++;
             if (wrongAnswersCount >= 3) {
