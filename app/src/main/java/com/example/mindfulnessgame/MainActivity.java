@@ -130,15 +130,13 @@ public class MainActivity extends AppCompatActivity {
                             if (rightAnswers.containsKey(level.images[i])) {
                                 int oldAmount = rightAnswers.get(level.images[i]);
                                 rightAnswers.put(level.images[i], oldAmount + 1);
-                                level.allowedImages.remove((Integer) level.images[i]);
                             }
                             else rightAnswers.put(level.images[i], 1);
                         }
-                        int r = (int) (Math.random() * level.allowedImages.size());
-                        rightAnswers.put(level.allowedImages.get(r)[(int) (Math.random() * level.allowedImages.get(r).length)], 0);
+                        rightAnswers.put(level.getExtraImage(), 0);
 
                         for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
-                            playerAnswers.add(new Answer(entry.getKey(), 0));
+                            playerAnswers.add(new Answer(entry.getKey(), -1));
                         Collections.sort(playerAnswers, new Comparator<Answer>() {
                             @Override
                             public int compare(Answer o1, Answer o2) {
@@ -150,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
-                        String out = "" + ((playerAnswers.get(currentAnswer).amount == 0) ? "" : playerAnswers.get(currentAnswer).amount);
-                        answerAmount.setText(out);
                         cancel();
                     }
                 };
@@ -176,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         else if (currentAnswer >= playerAnswers.size()) currentAnswer = 0;
 
         answerImage.setImageResource(playerAnswers.get(currentAnswer).image);
-        String out = "" + ((playerAnswers.get(currentAnswer).amount == 0) ? "" : playerAnswers.get(currentAnswer).amount);
+        String out = "" + ((playerAnswers.get(currentAnswer).amount == -1) ? "" : playerAnswers.get(currentAnswer).amount);
         answerAmount.setText(out);
     }
 
@@ -187,12 +183,18 @@ public class MainActivity extends AppCompatActivity {
         try {
             playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
         } catch (IllegalStateException | NumberFormatException e) {
+            Toast.makeText(this, "УПС!\nВЫ ЗАПОЛНИЛИ НЕ ВСЕ ПОЛЯ ОТВЕТОВ", Toast.LENGTH_SHORT).show();
             return;
         }
 
         TreeMap<Integer, Integer> playerAnswers = new TreeMap<>();
         for (int i = 0; i < this.playerAnswers.size(); i++)
             playerAnswers.put(this.playerAnswers.get(i).image, this.playerAnswers.get(i).amount);
+
+        if (playerAnswers.containsValue(-1)) {
+            Toast.makeText(this, "УПС!\nВЫ ЗАПОЛНИЛИ НЕ ВСЕ ПОЛЯ ОТВЕТОВ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (playerAnswers.entrySet().equals(rightAnswers.entrySet())) {
             Toast.makeText(this, "ВЫ УСПЕШНО ПРОШЛИ ЭТОТ УРОВЕНЬ =)", Toast.LENGTH_LONG).show();
