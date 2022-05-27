@@ -3,13 +3,13 @@
     <string name="mindfulness_game">ИГРА НА ВНИМАТЕЛЬНОСТЬ</string>
     <string name="levels">УРОВНИ</string>
     <string name="main_menu">ГЛАВНОЕ МЕНЮ</string>
-    <string name="choose_level">ВЫБЕРИТЕ УРОВЕНЬ</string>
+    <string name="choose_level">ВЫБЕРИТЕ УРОВЕНЬ:</string>
     <string name="choose">ВЫБРАТЬ</string>
-    <string name="amount">КОЛИЧЕСТВО</string>
+    <string name="amount">КОЛИЧЕСТВО:</string>
     <string name="check">ПРОВЕРИТЬ</string>
-    <string name="background_color">ЦВЕТ ФОНА</string>
-    <string name="text_bg_color">ЦВЕТ ФОНА ТЕКСТА</string>
+    <string name="background_color">ЦВЕТ ФОНА:</string>
+    <string name="text_bg_color">ЦВЕТ ФОНА ТЕКСТА:</string>
     <string name="save_changes">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
-    <string name="chosen_color">ВЫБРАННЫЙ ЦВЕТ</string>
-    <string name="infinite_mode">БЕСКОНЕЧНЫЙ РЕЖИМ</string>
+    <string name="chosen_color">ВЫБРАННЫЙ ЦВЕТ:</string>
+    <string name="endless_mode">БЕСКОНЕЧНЫЙ РЕЖИМ</string>
 </resources>

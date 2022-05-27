@@ -70,7 +70,7 @@
             android:gravity="center"
             android:textColor="#d9d9d9"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
             android:gravity="center"
             android:textColor="#d9d9d9"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <ListView
             android:id="@+id/text_bg_colors_LV"
@@ -123,7 +123,7 @@
             android:gravity="center"
             android:textColor="#d9d9d9"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="14sp"/>
 
         <FrameLayout
             android:layout_width="match_parent"

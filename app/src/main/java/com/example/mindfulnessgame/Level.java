@@ -9,10 +9,8 @@ public class Level implements Serializable {
     ArrayList<int[]> allowedImages = new ArrayList<>();
     int[] images;
 
-    int imageTime, switchTime, timeCount;
+    int imageTime, switchTime, timeCount, number, currentImageNumber;
     boolean imageOn;
-    int currentImageNumber;
-    int number;
 
     public Level(int imageTime, int switchTime, ArrayList<int[]> allowedImages, int imagesAmount, int number) {
         this.imageTime = imageTime;

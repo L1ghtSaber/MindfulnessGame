@@ -9,19 +9,24 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    static final String CURRENT_UNLOCKED_LEVEL_KEY = "currentUnlockedLevel";
-    static final String INFINITE_MODE_KEY = "infiniteMode";
+    static final String ENDLESS_MODE = "endlessMode";
 
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
+
+    int levelToUnlockIM = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +40,62 @@ public class MainMenuActivity extends AppCompatActivity {
         changeColors();
 
         SettingsActivity.fillImages();
+
+        showStateOfEndlessMode();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         changeColors();
+
+        showStateOfEndlessMode();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        changeColors();
+
+        showStateOfEndlessMode();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeColors();
+
+        showStateOfEndlessMode();
+    }
+
+    public void showStateOfEndlessMode() {
+        ImageButton endlessModeIB = findViewById(R.id.endless_mode_IB);
+        TextView endlessModeTV = findViewById(R.id.endless_mode_TV);
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockIM) {
+            endlessModeIB.setImageResource(R.drawable.cross);
+            endlessModeTV.setTextColor(Color.parseColor("#9e9e9e"));
+        } else {
+            endlessModeIB.setImageResource(0);
+            endlessModeTV.setTextColor(Color.parseColor("#d9d9d9"));
+            showHighScore();
+        }
+    }
+
+    public void showHighScore() {
+        TextView highScoreTV = findViewById(R.id.high_score_TV);
+        int highScore = preferences.getInt(MainActivity.HIGH_SCORE, 0);
+
+        highScoreTV.setBackground(AppCompatResources.getDrawable(this, R.drawable.rounded_shape));
+        String out = "РЕКОРД: " + highScore + " ";
+        if (highScore % 10 == 0 || highScore % 10 > 4) out += "УРОВНЕЙ";
+        else if (highScore % 10 > 1 && highScore % 10 < 5) out += "УРОВНЯ";
+        else out += "УРОВЕНЬ";
+        highScoreTV.setText(out);
     }
 
     public void changeColors() {
         // у вас появились вопросы: зачем, почему, для чего? у меня самого они появились, когда я этот блок кода писал
-        // ответов я так и не нашёл, но код по-другому корректно не работает
+        // ответов я так и не нашёл, но отображение элементов разметки по-другому корректно не работает
         GradientDrawable background = (GradientDrawable) findViewById(R.id.main_menu_CL).getBackground();
         background.setColor(Color.parseColor(preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
 
@@ -55,7 +105,7 @@ public class MainMenuActivity extends AppCompatActivity {
         roundedShape = (GradientDrawable) findViewById(R.id.levels_IB).getBackground();
         roundedShape.setColor(Color.parseColor(preferences.getString(SettingsActivity.TEXT_BACKGROUND_COLOR, "#88008c")));
 
-        findViewById(R.id.infinite_mode_IB).setBackground(roundedShape);
+        findViewById(R.id.endless_mode_IB).setBackground(roundedShape);
 
         roundedShape = (GradientDrawable) findViewById(R.id.settings_IB).getBackground();
         roundedShape.setColor(Color.parseColor(preferences.getString(SettingsActivity.TEXT_BACKGROUND_COLOR, "#88008c")));
@@ -74,13 +124,20 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void startInfiniteGame(View view) {
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockIM) {
+            Toast.makeText(this, "ПРОЙДИТЕ УРОВЕНЬ " + levelToUnlockIM + ",\nЧТОБЫ РАЗБЛОКИРОВАТЬ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         playClickSound(this);
 
+        showHighScore();
+
         Intent mainActivity = new Intent(this, MainActivity.class);
-        mainActivity.putExtra(LevelsActivity.LEVEL_KEY, new Level(2000, 2000,
+        mainActivity.putExtra(LevelsActivity.LEVEL, new Level(2000, 2000,
                 new ArrayList<>(Collections.singletonList(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())))),
                 1, 0));
-        mainActivity.putExtra(INFINITE_MODE_KEY, true);
+        mainActivity.putExtra(ENDLESS_MODE, true);
         startActivity(mainActivity);
     }
 

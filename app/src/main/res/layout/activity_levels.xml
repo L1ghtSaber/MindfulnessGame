@@ -76,7 +76,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="1"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -100,7 +99,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="2"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -124,7 +122,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="3"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -152,7 +149,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="4"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -176,7 +172,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="5"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -200,7 +195,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="6"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -228,7 +222,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="7"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -252,7 +245,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="8"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -276,7 +268,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="9"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -294,11 +285,13 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:id="@+id/previous_ten_levels_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/rounded_shape"
                     android:rotation="270"
-                    android:src="@drawable/arrow"/>
+                    android:src="@drawable/arrow"
+                    android:onClick="changeCurrentTenLevels"/>
 
             </FrameLayout>
 
@@ -318,7 +311,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:text="10"
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="#d9d9d9"
@@ -332,11 +324,13 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:id="@+id/next_ten_levels_IB"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/rounded_shape"
                     android:rotation="90"
-                    android:src="@drawable/arrow"/>
+                    android:src="@drawable/arrow"
+                    android:onClick="changeCurrentTenLevels"/>
 
             </FrameLayout>
 

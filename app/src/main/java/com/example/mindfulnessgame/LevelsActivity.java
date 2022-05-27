@@ -1,6 +1,7 @@
 package com.example.mindfulnessgame;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 
 public class LevelsActivity extends AppCompatActivity {
 
-    static final String LEVEL_KEY = "level";
+    static final String CURRENT_UNLOCKED_LEVEL = "currentUnlockedLevel";
+    static final String LEVEL = "level";
 
     Intent main;
     int[] levelButtonIds = new int[] {
@@ -32,7 +34,7 @@ public class LevelsActivity extends AppCompatActivity {
             R.id.level_9_TV, R.id.level_10_TV
     };
 
-    int chosenLevel = -1;
+    int chosenLevel = -1, currentTenLevels = 1, maxTenLevels = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,33 +53,45 @@ public class LevelsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     MainMenuActivity.playClickSound(LevelsActivity.this);
 
-                    if (chosenLevel != i1) {
-                        chosenLevel = i1;
-                        selectLevel();
-                    } else {
+                    if (chosenLevel != i1) chosenLevel = i1;
+                    else {
                         levelButtons[i1].setImageResource(0);
                         chosenLevel = -1;
                     }
+
+                    showBlockedLevels();
                 }
             });
         }
+        setLevelNumbers();
+
         showBlockedLevels();
     }
 
-    public void selectLevel() {
-        for (int i = 0; i < levelButtons.length; i++) {
-            if (i == chosenLevel) {
-                levelButtons[i].setImageResource(R.drawable.selection);
-            } else levelButtons[i].setImageResource(0);
+    public void setLevelNumbers() {
+        for (int i = 0; i < levelNumberIds.length; i++) {
+            String out = "" + (i + 1 + (currentTenLevels - 1) * 10);
+            ((TextView) findViewById(levelNumberIds[i])).setText(out);
         }
-        showBlockedLevels();
     }
 
     public void showBlockedLevels() {
-        for (int i = levelButtons.length - 1; i > MainMenuActivity.preferences.getInt(MainMenuActivity.CURRENT_UNLOCKED_LEVEL_KEY, 0); i--) {
+        int currentUnlockedLevel = MainMenuActivity.preferences.getInt(CURRENT_UNLOCKED_LEVEL, 0);
+        for (int i = 0; i < levelButtons.length; i++) {
+            TextView levelNumberTV = findViewById(levelNumberIds[i]);
+
+            int levelNumber = Integer.parseInt(levelNumberTV.getText().toString());
+            if (levelNumber <= currentUnlockedLevel) {
+                levelButtons[i].setImageResource(0);
+                if (i == chosenLevel) levelButtons[i].setImageResource(R.drawable.selection);
+                levelButtons[i].setClickable(true);
+                levelNumberTV.setTextColor(Color.parseColor("#d9d9d9"));
+                continue;
+            }
+
             levelButtons[i].setImageResource(R.drawable.cross);
             levelButtons[i].setClickable(false);
-            ((TextView) findViewById(levelNumberIds[i])).setTextColor(getResources().getColor(R.color.light_gray));
+            levelNumberTV.setTextColor(Color.parseColor("#9e9e9e"));
         }
     }
 
@@ -88,24 +102,30 @@ public class LevelsActivity extends AppCompatActivity {
 
         Level[] levels = new Level[10];
         ArrayList<int[]> images = new ArrayList<>();
-        images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
-        for (int i = 0, imageTime = 1000, switchTime = 1000, imagesAmount = 3; i < levels.length; i++) {
-            levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i);
+        for (int i = 0; i < currentTenLevels; i++)
+            images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
+        for (int i = 0, imageTime = 1250 / currentTenLevels, switchTime = 1500 / currentTenLevels,
+             imagesAmount = 3 * currentTenLevels; i < levels.length; i++) {
 
-            imageTime -= 100;
-            if (imageTime <= 0) imageTime = 10;
+            levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i + (currentTenLevels - 1) * 10);
 
-            if ((i + 1) % 2 == 0) switchTime -= 200;
-            if (switchTime <= 0) switchTime = 10;
+            imageTime -= 10 * currentTenLevels;
+            if (imageTime <= 0) imageTime = 5;
+
+            if ((i + 1) % 2 == 0) switchTime -= 20 * currentTenLevels;
+            if (switchTime <= 0) switchTime = 5;
 
 
             if (i == 0 || i == 2 || i == 6) imagesAmount += 2;
             else if (i == 4 || i == 8) imagesAmount += 3;
 
-            if ((i + 1) % 3 == 0) images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
+            if ((i + 1) % 5 == 0) {
+                for (int j = 0; j < currentTenLevels; j++)
+                    images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
+            }
         }
-        main.putExtra(LEVEL_KEY, levels[chosenLevel]);
-        main.putExtra(MainMenuActivity.INFINITE_MODE_KEY, false);
+        main.putExtra(LEVEL, levels[chosenLevel]);
+        main.putExtra(MainMenuActivity.ENDLESS_MODE, false);
         startActivity(main);
         finish();
     }
@@ -113,5 +133,20 @@ public class LevelsActivity extends AppCompatActivity {
     public void exitToMainMenu(View view) {
         MainMenuActivity.playClickSound(this);
         finish();
+    }
+
+    public void changeCurrentTenLevels(View view) {
+        MainMenuActivity.playClickSound(this);
+
+        if (view.getId() == R.id.previous_ten_levels_IB) currentTenLevels--;
+        else if (view.getId() == R.id.next_ten_levels_IB) currentTenLevels++;
+
+        if (currentTenLevels < 1) currentTenLevels = maxTenLevels;
+        else if (currentTenLevels > maxTenLevels) currentTenLevels = 1;
+
+        chosenLevel = -1;
+
+        setLevelNumbers();
+        showBlockedLevels();
     }
 }
