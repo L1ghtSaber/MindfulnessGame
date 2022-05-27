@@ -1,8 +1,15 @@
 package com.example.mindfulnessgame;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -74,16 +82,21 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static void fillImages() {
         images.add(new int[]{
-                R.mipmap.yellow_square_foreground, R.mipmap.orange_square_foreground, R.mipmap.red_square_foreground,
-                R.mipmap.blue_circle_foreground, R.mipmap.blue_capsule_foreground, R.mipmap.blue_elipse_foreground,
-                R.mipmap.green_triangle_0_foreground, R.mipmap.green_triangle_90_foreground, R.mipmap.green_triangle_180_foreground,
-                R.mipmap.pueple_rhombus_0_foreground, R.mipmap.pueple_rhombus_90_foreground, R.mipmap.cyan_hexagon_0_foreground,
-                R.mipmap.cyan_hexagon_90_foreground, R.mipmap.yellow_star_foreground, R.mipmap.orange_star_foreground
+                R.drawable.yellow_square, R.drawable.orange_square, R.drawable.red_square,
+                R.drawable.blue_circle, R.drawable.blue_capsule, R.drawable.blue_elipse,
+                R.drawable.green_triangle_0, R.drawable.green_triangle_90, R.drawable.green_triangle_180,
+                R.drawable.purple_rhombus_0, R.drawable.purple_rhombus_90, R.drawable.cyan_hexagon_0,
+                R.drawable.cyan_hexagon_90, R.drawable.yellow_star, R.drawable.orange_star
         });
         images.add(new int[]{
-                R.mipmap.it_cube_logo_foreground, R.mipmap.samsung_logo_foreground, R.mipmap.it_school_logo_foreground,
-                R.mipmap.windows_logo_foreground, R.mipmap.java_logo_foreground, R.mipmap.android_logo_foreground,
-                R.mipmap.jetbrains_logo_foreground
+                R.drawable.it_cube_logo, R.drawable.samsung_logo, R.drawable.it_school_logo,
+                R.drawable.windows_logo, R.drawable.java_logo, R.drawable.android_logo,
+                R.drawable.jetbrains_logo, R.drawable.discord_logo
+        });
+        images.add(new int[]{
+                R.drawable.alarm_clock, R.drawable.apple, R.drawable.bottle,
+                R.drawable.car, R.drawable.cup, R.drawable.pencil,
+                R.drawable.smartphone, R.drawable.table_lamp, R.drawable.tree
         });
     }
 
@@ -119,7 +132,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     class Color {
-
         String resource;
 
         boolean isSelected;

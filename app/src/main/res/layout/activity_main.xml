@@ -200,7 +200,7 @@
                 android:id="@+id/hide_IB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@mipmap/it_cube_logo_background"/>
+                android:background="@mipmap/empty"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
