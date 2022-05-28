@@ -21,16 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded_shape"
-            android:onClick="exitToMainMenu"/>
+            android:onClick="exitToMainMenu" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/main_menu"
+            android:textColor="#d9d9d9"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#d9d9d9"/>
+            android:textStyle="bold" />
 
     </FrameLayout>
 
@@ -41,8 +41,8 @@
         android:gravity="center"
         android:text="@string/choose_level"
         android:textColor="#d9d9d9"
-        android:textStyle="bold"
         android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -69,17 +69,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_1_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -92,17 +92,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_2_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -115,17 +115,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_3_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -142,17 +142,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_4_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -165,17 +165,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_5_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -188,17 +188,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_6_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -215,17 +215,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_7_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -238,17 +238,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_8_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -261,17 +261,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_9_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -289,9 +289,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/rounded_shape"
+                    android:onClick="changeCurrentTenLevels"
                     android:rotation="270"
-                    android:src="@drawable/arrow"
-                    android:onClick="changeCurrentTenLevels"/>
+                    android:src="@drawable/arrow" />
 
             </FrameLayout>
 
@@ -304,17 +304,17 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:background="@drawable/rounded_shape"/>
+                    android:background="@drawable/rounded_shape" />
 
                 <TextView
                     android:id="@+id/level_10_TV"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="start"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:textColor="#d9d9d9"
-                    android:gravity="center"/>
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -328,9 +328,9 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/rounded_shape"
+                    android:onClick="changeCurrentTenLevels"
                     android:rotation="90"
-                    android:src="@drawable/arrow"
-                    android:onClick="changeCurrentTenLevels"/>
+                    android:src="@drawable/arrow" />
 
             </FrameLayout>
 
@@ -353,16 +353,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded_shape"
-            android:onClick="chooseLevel"/>
+            android:onClick="chooseLevel" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/choose"
             android:gravity="center"
+            android:text="@string/choose"
+            android:textColor="#d9d9d9"
             android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="#d9d9d9"/>
+            android:textStyle="bold" />
 
     </FrameLayout>
 

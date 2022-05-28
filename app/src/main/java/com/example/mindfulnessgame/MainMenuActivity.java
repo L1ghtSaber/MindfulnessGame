@@ -26,8 +26,8 @@ public class MainMenuActivity extends AppCompatActivity {
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
 
-    static boolean buttonsSoundEffect;
-    int levelToUnlockIM = 5;
+    static boolean buttonsSoundEffect; // условие для проигрывания звукового эффекта кнопок
+    int levelToUnlockEM = 5; // уровень, который нужно пройти, чтобы разблокировать бесконечный режим
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         changeColors();
 
-        SettingsActivity.fillImages();
+        SettingsActivity.fillImages(); // заполняем изображения
 
         showStateOfEndlessMode();
     }
@@ -80,7 +80,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public void showStateOfEndlessMode() {
         ImageButton endlessModeIB = findViewById(R.id.endless_mode_IB);
         TextView endlessModeTV = findViewById(R.id.endless_mode_TV);
-        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockIM) {
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockEM) {
             endlessModeIB.setImageResource(R.drawable.white_cross);
             endlessModeTV.setTextColor(Color.parseColor("#9e9e9e"));
         } else {
@@ -132,22 +132,22 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    public void startInfiniteGame(View view) {
-        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockIM) {
-            Toast.makeText(this, "ПРОЙДИТЕ УРОВЕНЬ " + levelToUnlockIM + ",\nЧТОБЫ РАЗБЛОКИРОВАТЬ", Toast.LENGTH_SHORT).show();
+    public void startEndlessGame(View view) {
+        playClickSound(this);
+
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockEM) {
+            Toast.makeText(this, "ПРОЙДИТЕ УРОВЕНЬ " + levelToUnlockEM + ",\nЧТОБЫ РАЗБЛОКИРОВАТЬ", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        playClickSound(this);
-
         showHighScore();
 
-        Intent mainActivity = new Intent(this, MainActivity.class);
-        mainActivity.putExtra(LevelsActivity.LEVEL, new Level(2000, 2000,
+        Intent main = new Intent(this, MainActivity.class);
+        main.putExtra(LevelsActivity.LEVEL, new Level(1500, 1500,
                 new ArrayList<>(Collections.singletonList(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())))),
                 1, 0));
-        mainActivity.putExtra(ENDLESS_MODE, true);
-        startActivity(mainActivity);
+        main.putExtra(ENDLESS_MODE, true);
+        startActivity(main);
     }
 
     public static void playClickSound(Context context) {

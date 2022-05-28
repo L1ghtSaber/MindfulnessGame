@@ -174,14 +174,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/sound_effect"
-                android:background="@drawable/image_rounded_shape"/>
+                android:background="@drawable/image_rounded_shape"
+                android:src="@drawable/sound_effect" />
 
             <ImageView
                 android:id="@+id/buttons_sound_effect_IV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
@@ -240,7 +240,7 @@
                 android:id="@+id/colorblind_mode_SC"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -251,14 +251,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/purple_rhombus_0"
-                android:background="@drawable/image_rounded_shape"/>
+                android:background="@drawable/image_rounded_shape"
+                android:src="@drawable/purple_rhombus_0" />
 
             <ImageView
                 android:id="@+id/colorblind_mode_IV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
@@ -282,14 +282,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/timer_classic_mode"
-                android:background="@drawable/image_rounded_shape"/>
+                android:background="@drawable/image_rounded_shape"
+                android:src="@drawable/timer_classic_mode" />
 
             <ImageView
                 android:id="@+id/timer_classic_mode_IV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
@@ -350,7 +350,7 @@
                 android:id="@+id/timer_endless_mode_SC"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -361,14 +361,14 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/timer_endless_mode"
-                android:background="@drawable/image_rounded_shape"/>
+                android:background="@drawable/image_rounded_shape"
+                android:src="@drawable/timer_endless_mode" />
 
             <ImageView
                 android:id="@+id/timer_endless_mode_IV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 

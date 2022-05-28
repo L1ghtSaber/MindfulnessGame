@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -27,8 +26,8 @@ public class SettingsActivity extends AppCompatActivity {
     static final String TIMER_CLASSIC_MODE = "timerClassicMode";
     static final String TIMER_ENDLESS_MODE = "timerEndlessMode";
 
-    ListView bgColors, textBgColors;
-    ImageView chosenColor;
+    ListView bgColors, textBgColors; // отображение возможных цветов для приложения
+    ImageView chosenColor; // отображение выбранного цвета
     int[] optionSwitchIds = {
             R.id.buttons_sound_effect_SC, R.id.colorblind_mode_SC,
             R.id.timer_classic_mode_SC, R.id.timer_endless_mode_SC
@@ -57,10 +56,12 @@ public class SettingsActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_settings);
 
+        // заполнение цветов для фона и для фона текста
         Color[] backgroundColors = new Color[colors.length];
-        for (int i = 0; i < backgroundColors.length; i++) backgroundColors[i] = new Color(colors[i].resource);
+        for (int i = 0; i < backgroundColors.length; i++)
+            backgroundColors[i] = new Color(colors[i].resource);
         String bgColor = MainMenuActivity.preferences.getString(BACKGROUND_COLOR, "#f01ff0");
-        for (Color backgroundColor: backgroundColors) {
+        for (Color backgroundColor : backgroundColors) {
             if (backgroundColor.resource.equals(bgColor)) {
                 backgroundColor.isSelected = true;
                 break;
@@ -72,9 +73,10 @@ public class SettingsActivity extends AppCompatActivity {
         bgColors.setAdapter(new Color("").new Adapter(this, backgroundColors, chosenColor));
 
         Color[] textBackgroundColors = new Color[colors.length];
-        for (int i = 0; i < textBackgroundColors.length; i++) textBackgroundColors[i] = new Color(colors[i].resource);
+        for (int i = 0; i < textBackgroundColors.length; i++)
+            textBackgroundColors[i] = new Color(colors[i].resource);
         String textBgColor = MainMenuActivity.preferences.getString(TEXT_BACKGROUND_COLOR, "#88008c");
-        for (Color textBackgroundColor: textBackgroundColors) {
+        for (Color textBackgroundColor : textBackgroundColors) {
             if (textBackgroundColor.resource.equals(textBgColor)) {
                 textBackgroundColor.isSelected = true;
                 break;
@@ -85,11 +87,15 @@ public class SettingsActivity extends AppCompatActivity {
         textBgColors = findViewById(R.id.text_bg_colors_LV);
         textBgColors.setAdapter(new Color("").new Adapter(this, textBackgroundColors, chosenColor));
 
+        // я знаю, что делать фиксированное количество чего-то сложного, структурного, что может в дальнейшем увеличиться, -
+        // плохая идея, но в данном случае это наиболее быстрый и прсотой способ реализации нужного функционала
+        // я не собираюсь его расширять
         options[0] = MainMenuActivity.preferences.getBoolean(BUTTONS_SOUND_EFFECT, true);
         options[1] = MainMenuActivity.preferences.getBoolean(COLORBLIND_MODE, false);
         options[2] = MainMenuActivity.preferences.getBoolean(TIMER_CLASSIC_MODE, true);
         options[3] = MainMenuActivity.preferences.getBoolean(TIMER_ENDLESS_MODE, true);
 
+        // установка состояний опций
         for (int i = 0; i < optionSwitchIds.length; i++) {
             SwitchCompat optionSwitch = findViewById(optionSwitchIds[i]);
             ImageView optionImage = findViewById(optionImageIds[i]);
@@ -108,14 +114,15 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     options[i1] = optionSwitch.isChecked();
 
-                    if (options[i1]) optionImage.setImageResource((i1 != 1) ? 0 : R.drawable.red_cross);
+                    if (options[i1])
+                        optionImage.setImageResource((i1 != 1) ? 0 : R.drawable.red_cross);
                     else optionImage.setImageResource((i1 != 1) ? R.drawable.red_cross : 0);
                 }
             });
         }
     }
 
-    public static void fillImages() {
+    public static void fillImages() { // метод для заполнения изображений
         images.clear();
         if (!MainMenuActivity.preferences.getBoolean(COLORBLIND_MODE, false))
             images.add(new int[]{
@@ -182,7 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         boolean isSelected;
 
-        public Color(String  resource) {
+        public Color(String resource) {
             this.resource = resource;
         }
 
@@ -212,17 +219,17 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         MainMenuActivity.playClickSound(SettingsActivity.this);
 
-                        for (Color color: colors) color.isSelected = false;
+                        if (colors[position].isSelected) return;
+
+                        for (Color color : colors) color.isSelected = false;
                         colors[position].isSelected = true;
 
                         chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
                     }
                 });
-                if (colors[position].isSelected)
-                    chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
+
                 return convertView;
             }
         }
     }
-
 }

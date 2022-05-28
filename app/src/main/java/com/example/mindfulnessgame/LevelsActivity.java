@@ -14,10 +14,9 @@ import java.util.ArrayList;
 
 public class LevelsActivity extends AppCompatActivity {
 
-    static final String CURRENT_UNLOCKED_LEVEL = "currentUnlockedLevel";
+    static final String CURRENT_UNLOCKED_LEVEL = "currentUnlockedLevel"; // самый последний разблокированный уровень
     static final String LEVEL = "level";
 
-    Intent main;
     int[] levelButtonIds = {
             R.id.level_1_IB, R.id.level_2_IB,
             R.id.level_3_IB, R.id.level_4_IB,
@@ -34,7 +33,9 @@ public class LevelsActivity extends AppCompatActivity {
             R.id.level_9_TV, R.id.level_10_TV
     };
 
-    int chosenLevel = -1, currentTenLevels = 1, maxTenLevels = 3;
+    int chosenLevel = -1,
+            currentTenLevels = 1, // текущий десяток уровней
+            maxTenLevels = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,8 @@ public class LevelsActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_levels);
 
-        main = new Intent(LevelsActivity.this, MainActivity.class);
-
-        for (int i = 0; i < levelButtons.length; i++) levelButtons[i] = findViewById(levelButtonIds[i]);
+        for (int i = 0; i < levelButtons.length; i++)
+            levelButtons[i] = findViewById(levelButtonIds[i]);
 
         for (int i = 0; i < levelButtons.length; i++) {
             final int i1 = i;
@@ -63,6 +63,7 @@ public class LevelsActivity extends AppCompatActivity {
                 }
             });
         }
+
         setLevelNumbers();
 
         showBlockedLevels();
@@ -83,7 +84,7 @@ public class LevelsActivity extends AppCompatActivity {
             int levelNumber = Integer.parseInt(levelNumberTV.getText().toString());
             if (levelNumber <= currentUnlockedLevel) {
                 levelButtons[i].setImageResource(0);
-                if (i == chosenLevel) levelButtons[i].setImageResource(R.drawable.selection);
+                if (i == chosenLevel) levelButtons[i].setImageResource(R.drawable.selection); // так помечается выбранный уровень
                 levelButtons[i].setClickable(true);
                 levelNumberTV.setTextColor(Color.parseColor("#d9d9d9"));
                 continue;
@@ -100,6 +101,7 @@ public class LevelsActivity extends AppCompatActivity {
 
         if (chosenLevel == -1) return;
 
+        // генерация текущих десяти уровней по определённым правилам
         Level[] levels = new Level[10];
         ArrayList<int[]> images = new ArrayList<>();
         for (int i = 0; i < currentTenLevels; i++)
@@ -124,18 +126,22 @@ public class LevelsActivity extends AppCompatActivity {
                     images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
             }
         }
+
+        Intent main = new Intent(LevelsActivity.this, MainActivity.class);
         main.putExtra(LEVEL, levels[chosenLevel]);
         main.putExtra(MainMenuActivity.ENDLESS_MODE, false);
         startActivity(main);
+
         finish();
     }
 
     public void exitToMainMenu(View view) {
         MainMenuActivity.playClickSound(this);
+
         finish();
     }
 
-    public void changeCurrentTenLevels(View view) {
+    public void changeCurrentTenLevels(View view) { // смена текущего десятка уровней
         MainMenuActivity.playClickSound(this);
 
         if (view.getId() == R.id.previous_ten_levels_IB) currentTenLevels--;
@@ -144,9 +150,10 @@ public class LevelsActivity extends AppCompatActivity {
         if (currentTenLevels < 1) currentTenLevels = maxTenLevels;
         else if (currentTenLevels > maxTenLevels) currentTenLevels = 1;
 
-        chosenLevel = -1;
+        chosenLevel = -1; // чтобы не допустить читерства ;)
 
         setLevelNumbers();
+
         showBlockedLevels();
     }
 }

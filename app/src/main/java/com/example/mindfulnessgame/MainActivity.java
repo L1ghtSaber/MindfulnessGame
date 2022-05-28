@@ -7,7 +7,6 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,17 +24,22 @@ public class MainActivity extends AppCompatActivity {
 
     static final String HIGH_SCORE = "highScore";
 
-    TextView timerView, attemptsLeft, levelNumber;
-    ImageView image, answerImage;
-    EditText answerAmount;
-    ImageButton hideBtn;
+    TextView timerView, // таймер обратного отсчёта
+            attemptsLeft,
+            levelNumber;
+    ImageView image, // основное поле для картинок
+            answerImage; // поле для картинки в ответе
+    EditText answerAmount; // поле для ответа
+    TextView hide; // плашка, закрывающяя поля для ответа
 
     TreeMap<Integer, Integer> rightAnswers = new TreeMap<>();
     ArrayList<Answer> playerAnswers = new ArrayList<>();
     Level level;
 
-    int wrongAnswersCount, highScore, currentAnswer;
-    boolean endlessMode;
+    int wrongAnswersCount, // счётчик неправильных ответов
+            highScore,
+            currentAnswer; // номер текущего ответа
+    boolean endlessMode; // бесконечный режим игры
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         image = findViewById(R.id.image_IV);
         answerImage = findViewById(R.id.answer_image_IV);
         answerAmount = findViewById(R.id.answer_amount_ET);
-        hideBtn = findViewById(R.id.hide_IB);
+        hide = findViewById(R.id.hide_TV);
 
         level = (Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL);
 
@@ -62,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (endlessMode) {
+        if (endlessMode) { // т.к. выиграть в бесконечном режиме невозможно,
+            // этот кусок кода находится здесь, а не в методе проверки ответов
             Toast.makeText(this, "ВЫ ПРОШЛИ НА " + (level.number - highScore) + " УРОВНЕЙ БОЛЬШЕ,\nЧЕМ В ЛУЧШИЙ РАЗ", Toast.LENGTH_SHORT).show();
 
             if (level.number > highScore) {
@@ -76,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         // знаю, что лучше было бы разбить этот метод на несколько для лучшей читаемости,
         // но я придерживаюсь принципа, что если крупный кусок кода не используется в нескольких местах,
         // то его не надо разбивать на внешние методы
+
+        // настройка необходимых параметров
+        hide.setClickable(true);
+        hide.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
+        answerAmount.setCursorVisible(false);
+        String out = "УРОВЕНЬ: " + (level.number + 1);
+        levelNumber.setText(out);
+        rightAnswers.clear();
+        playerAnswers.clear();
+        currentAnswer = 0;
+
         class ImageTimer extends View {
 
             final CountDownTimer timer;
@@ -83,18 +99,10 @@ public class MainActivity extends AppCompatActivity {
             public ImageTimer(Context context) {
                 super(context);
 
-                hideBtn.setClickable(true);
-                hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
-                answerAmount.setCursorVisible(false);
-                String out = "УРОВЕНЬ: " + (level.number + 1);
-                levelNumber.setText(out);
-                rightAnswers.clear();
-                playerAnswers.clear();
-                currentAnswer = 0;
-
-                timer = new CountDownTimer(1000 * 60 * 60, 1) {
+                timer = new CountDownTimer(1000 * 60, 1) { // чтоб уж наверняка
                     @Override
                     public void onTick(long millisUntilFinished) {
+                        // механизм смены изображений в основном поле
                         if (level.imageOn) {
                             if (level.timeCount % level.imageTime == 0) {
                                 level.imageOn = false;
@@ -118,21 +126,21 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
-                        hideBtn.setBackgroundColor(0);
-                        hideBtn.setClickable(false);
+                        hide.setBackgroundColor(0);
+                        hide.setClickable(false);
                         answerAmount.setCursorVisible(true);
                         image.setImageResource(0);
 
+                        // установка правильных ответов и настройка ответов для игрока
                         for (int i = 0; i < level.images.length; i++) {
                             if (rightAnswers.containsKey(level.images[i])) {
                                 int oldAmount = rightAnswers.get(level.images[i]);
                                 rightAnswers.put(level.images[i], oldAmount + 1);
-                            }
-                            else rightAnswers.put(level.images[i], 1);
+                            } else rightAnswers.put(level.images[i], 1);
                         }
                         rightAnswers.put(level.getExtraImage(), 0);
 
-                        for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
+                        for (Map.Entry<Integer, Integer> entry : rightAnswers.entrySet())
                             playerAnswers.add(new Answer(entry.getKey(), -1));
                         Collections.sort(playerAnswers, new Comparator<Answer>() {
                             @Override
@@ -153,18 +161,13 @@ public class MainActivity extends AppCompatActivity {
                 };
             }
         }
-        class Timer extends View {
+        class Timer extends View { // на весь экран появляется полупрозрачная плашка с обратным отсчётом
 
             final CountDownTimer timer;
 
             public Timer(Context context) {
                 super(context);
 
-                hideBtn.setClickable(true);
-                hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
-                answerAmount.setCursorVisible(false);
-                String out = "УРОВЕНЬ: " + (level.number + 1);
-                levelNumber.setText(out);
                 timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
                 timerView.setClickable(true);
 
@@ -184,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                         timerView.setClickable(false);
 
                         new ImageTimer(MainActivity.this).timer.start();
+
                         cancel();
                     }
                 };
@@ -195,13 +199,13 @@ public class MainActivity extends AppCompatActivity {
         else new ImageTimer(this).timer.start();
     }
 
-    public void changeLevelImage(View view) {
+    public void changeLevelImage(View view) { // метод для смены ответа
         MainMenuActivity.playClickSound(this);
 
-        if (answerAmount.getText().toString().equals("150806")) { // чит-код на правильные ответы
+        if (answerAmount.getText().toString().equals("150806")) { // чит-код на правильные ответы (моя дата рождения =))
             answerAmount.setText("");
             playerAnswers.clear();
-            for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
+            for (Map.Entry<Integer, Integer> entry : rightAnswers.entrySet())
                 playerAnswers.add(new Answer(entry.getKey(), entry.getValue()));
 
             return;
@@ -226,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkAnswers(View view) {
+        // знаю, метод тоже большой, но почему - я объяснил выше
         MainMenuActivity.playClickSound(this);
 
         if (playerAnswers.isEmpty()) return;
@@ -252,9 +257,9 @@ public class MainActivity extends AppCompatActivity {
                     MainMenuActivity.editor.putInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, level.number + 2);
                     MainMenuActivity.editor.commit();
                 }
+
                 finish();
-            }
-            else {
+            } else {
                 level.imageTime -= 10;
                 if (level.imageTime <= 0) level.imageTime = 1;
 
@@ -266,7 +271,8 @@ public class MainActivity extends AppCompatActivity {
 
                 level.number++;
 
-                if (level.number % 4 == 0) level.allowedImages.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
+                if (level.number % 4 == 0)
+                    level.allowedImages.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
 
                 level = new Level(level.imageTime, level.switchTime, level.allowedImages, amount, level.number);
 
@@ -294,13 +300,15 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void changeAmount(View view) {
+    public void changeAmount(View view) { // чтобы не писать вручную ответ,
+        // можно воспользоваться кнопками прибавления и убавления
         MainMenuActivity.playClickSound(this);
 
         if (view.getId() == R.id.amount_minus_IB) playerAnswers.get(currentAnswer).amount--;
         else if (view.getId() == R.id.amount_plus_IB) playerAnswers.get(currentAnswer).amount++;
 
-        if (playerAnswers.get(currentAnswer).amount < 0) playerAnswers.get(currentAnswer).amount = 0;
+        if (playerAnswers.get(currentAnswer).amount < 0)
+            playerAnswers.get(currentAnswer).amount = 0;
 
         String out = "" + playerAnswers.get(currentAnswer).amount;
         answerAmount.setText(out);
