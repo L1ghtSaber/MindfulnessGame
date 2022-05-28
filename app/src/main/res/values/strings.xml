@@ -12,4 +12,9 @@
     <string name="save_changes">СОХРАНИТЬ ИЗМЕНЕНИЯ</string>
     <string name="chosen_color">ВЫБРАННЫЙ ЦВЕТ:</string>
     <string name="endless_mode">БЕСКОНЕЧНЫЙ РЕЖИМ</string>
+    <string name="options">ОПЦИИ:</string>
+    <string name="colorblind_mode">РЕЖИМ ДЛЯ ДАЛЬТОНИКОВ:</string>
+    <string name="buttons_sound_effect">ЗВУК У КНОПОК:</string>
+    <string name="timer_classic_mode">ОБРАТНЫЙ ОТСЧЁТ ПРИ ОБЫЧНОМ РЕЖИМЕ:</string>
+    <string name="timer_endless_mode">ОБРАТНЫЙ ОТСЧЁТ ПРИ БЕСКОНЧЕНОМ РЕЖИМЕ:</string>
 </resources>

@@ -18,19 +18,19 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/rounded_shape"
-            android:onClick="exitToMainMenu"/>
+            android:onClick="exitToMainMenu" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/main_menu"
+            android:textColor="#d9d9d9"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#d9d9d9"/>
+            android:textStyle="bold" />
 
     </FrameLayout>
 
@@ -49,28 +49,28 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@drawable/rounded_shape"
-            android:text="@string/background_color"
             android:gravity="center"
+            android:text="@string/background_color"
             android:textColor="#d9d9d9"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ListView
             android:id="@+id/bg_colors_LV"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="#d9d9d9"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@drawable/rounded_shape"
-            android:text="@string/chosen_color"
             android:gravity="center"
+            android:text="@string/chosen_color"
             android:textColor="#d9d9d9"
-            android:textStyle="bold"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:id="@+id/chosen_color_bg_IV"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
@@ -102,28 +102,28 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@drawable/rounded_shape"
-            android:text="@string/text_bg_color"
             android:gravity="center"
+            android:text="@string/text_bg_color"
             android:textColor="#d9d9d9"
-            android:textStyle="bold"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <ListView
             android:id="@+id/text_bg_colors_LV"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="#d9d9d9"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@drawable/rounded_shape"
-            android:text="@string/chosen_color"
             android:gravity="center"
+            android:text="@string/chosen_color"
             android:textColor="#d9d9d9"
-            android:textStyle="bold"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -134,6 +134,240 @@
                 android:id="@+id/chosen_color_text_bg_IV"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/rounded_shape"
+        android:gravity="center"
+        android:text="@string/options"
+        android:textColor="#d9d9d9"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.59" />
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.693">
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/sound_effect"
+                android:background="@drawable/image_rounded_shape"/>
+
+            <ImageView
+                android:id="@+id/buttons_sound_effect_IV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rounded_shape"
+                android:gravity="center"
+                android:text="@string/buttons_sound_effect"
+                android:textColor="#d9d9d9"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/buttons_sound_effect_SC"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.693">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rounded_shape"
+                android:gravity="center"
+                android:text="@string/colorblind_mode"
+                android:textColor="#d9d9d9"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/colorblind_mode_SC"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/purple_rhombus_0"
+                android:background="@drawable/image_rounded_shape"/>
+
+            <ImageView
+                android:id="@+id/colorblind_mode_IV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833">
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/timer_classic_mode"
+                android:background="@drawable/image_rounded_shape"/>
+
+            <ImageView
+                android:id="@+id/timer_classic_mode_IV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rounded_shape"
+                android:gravity="center"
+                android:text="@string/timer_classic_mode"
+                android:textColor="#d9d9d9"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/timer_classic_mode_SC"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rounded_shape"
+                android:gravity="center"
+                android:text="@string/timer_endless_mode"
+                android:textColor="#d9d9d9"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/timer_endless_mode_SC"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/timer_endless_mode"
+                android:background="@drawable/image_rounded_shape"/>
+
+            <ImageView
+                android:id="@+id/timer_endless_mode_IV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"/>
 
         </FrameLayout>
@@ -151,21 +385,20 @@
         app:layout_constraintVertical_bias="0.975">
 
         <ImageButton
-            android:layout_width="200dp"
-            android:layout_height="75dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/rounded_shape"
-            android:onClick="saveChanges"/>
+            android:onClick="saveChanges" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/save_changes"
             android:gravity="center"
+            android:text="@string/save_changes"
+            android:textColor="#d9d9d9"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#d9d9d9"/>
+            android:textStyle="bold" />
 
     </FrameLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

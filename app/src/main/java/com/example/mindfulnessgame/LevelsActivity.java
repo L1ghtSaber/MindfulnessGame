@@ -18,7 +18,7 @@ public class LevelsActivity extends AppCompatActivity {
     static final String LEVEL = "level";
 
     Intent main;
-    int[] levelButtonIds = new int[] {
+    int[] levelButtonIds = {
             R.id.level_1_IB, R.id.level_2_IB,
             R.id.level_3_IB, R.id.level_4_IB,
             R.id.level_5_IB, R.id.level_6_IB,
@@ -26,7 +26,7 @@ public class LevelsActivity extends AppCompatActivity {
             R.id.level_9_IB, R.id.level_10_IB
     };
     ImageButton[] levelButtons = new ImageButton[levelButtonIds.length];
-    int[] levelNumberIds = new int[] {
+    int[] levelNumberIds = {
             R.id.level_1_TV, R.id.level_2_TV,
             R.id.level_3_TV, R.id.level_4_TV,
             R.id.level_5_TV, R.id.level_6_TV,
@@ -76,7 +76,7 @@ public class LevelsActivity extends AppCompatActivity {
     }
 
     public void showBlockedLevels() {
-        int currentUnlockedLevel = MainMenuActivity.preferences.getInt(CURRENT_UNLOCKED_LEVEL, 0);
+        int currentUnlockedLevel = MainMenuActivity.preferences.getInt(CURRENT_UNLOCKED_LEVEL, 1);
         for (int i = 0; i < levelButtons.length; i++) {
             TextView levelNumberTV = findViewById(levelNumberIds[i]);
 
@@ -89,7 +89,7 @@ public class LevelsActivity extends AppCompatActivity {
                 continue;
             }
 
-            levelButtons[i].setImageResource(R.drawable.cross);
+            levelButtons[i].setImageResource(R.drawable.white_cross);
             levelButtons[i].setClickable(false);
             levelNumberTV.setTextColor(Color.parseColor("#9e9e9e"));
         }

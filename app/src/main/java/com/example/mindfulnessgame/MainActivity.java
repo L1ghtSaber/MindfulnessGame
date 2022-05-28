@@ -44,51 +44,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         timerView = findViewById(R.id.timer_TV);
-        timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
-        timerView.setClickable(true);
         attemptsLeft = findViewById(R.id.attempts_left_TV);
         levelNumber = findViewById(R.id.level_number_TV);
         image = findViewById(R.id.image_IV);
         answerImage = findViewById(R.id.answer_image_IV);
         answerAmount = findViewById(R.id.answer_amount_ET);
         hideBtn = findViewById(R.id.hide_IB);
-        hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
 
         level = (Level) getIntent().getSerializableExtra(LevelsActivity.LEVEL);
-        String out = "УРОВЕНЬ: " + (level.number + 1);
-        levelNumber.setText(out);
 
         endlessMode = getIntent().getBooleanExtra(MainMenuActivity.ENDLESS_MODE, false);
         highScore = MainMenuActivity.preferences.getInt(HIGH_SCORE, 0);
 
-        class Timer extends View {
-
-            final CountDownTimer timer;
-
-            public Timer(Context context) {
-                super(context);
-                final int[] count = {3};
-                timer = new CountDownTimer(4000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        String out = "\n\n\n" + ((count[0] <= 0) ? "ВПЕРЁД!" : count[0]);
-                        timerView.setText(out);
-                        count[0]--;
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        timerView.setText("");
-                        timerView.setBackgroundColor(Color.argb(0, 0, 0, 0));
-                        timerView.setClickable(false);
-
-                        MainActivity.this.start();
-                        cancel();
-                    }
-                };
-            }
-        }
-        new Timer(this).timer.start();
+        startGame();
     }
 
     @Override
@@ -104,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void start() {
+    public void startGame() {
+        // знаю, что лучше было бы разбить этот метод на несколько для лучшей читаемости,
+        // но я придерживаюсь принципа, что если крупный кусок кода не используется в нескольких местах,
+        // то его не надо разбивать на внешние методы
         class ImageTimer extends View {
 
             final CountDownTimer timer;
@@ -182,13 +153,52 @@ public class MainActivity extends AppCompatActivity {
                 };
             }
         }
-        new ImageTimer(this).timer.start();
+        class Timer extends View {
+
+            final CountDownTimer timer;
+
+            public Timer(Context context) {
+                super(context);
+
+                hideBtn.setClickable(true);
+                hideBtn.setBackgroundColor(Color.parseColor(MainMenuActivity.preferences.getString(SettingsActivity.BACKGROUND_COLOR, "#f01ff0")));
+                answerAmount.setCursorVisible(false);
+                String out = "УРОВЕНЬ: " + (level.number + 1);
+                levelNumber.setText(out);
+                timerView.setBackgroundColor(Color.argb(100, 0, 0, 0));
+                timerView.setClickable(true);
+
+                final int[] count = {3};
+                timer = new CountDownTimer(4000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        String out = "\n\n\n" + ((count[0] <= 0) ? "ВПЕРЁД!" : count[0]);
+                        timerView.setText(out);
+                        count[0]--;
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        timerView.setText("");
+                        timerView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+                        timerView.setClickable(false);
+
+                        new ImageTimer(MainActivity.this).timer.start();
+                        cancel();
+                    }
+                };
+            }
+        }
+        if ((!endlessMode && MainMenuActivity.preferences.getBoolean(SettingsActivity.TIMER_CLASSIC_MODE, true)
+                || (endlessMode && MainMenuActivity.preferences.getBoolean(SettingsActivity.TIMER_ENDLESS_MODE, true))))
+            new Timer(this).timer.start();
+        else new ImageTimer(this).timer.start();
     }
 
     public void changeLevelImage(View view) {
         MainMenuActivity.playClickSound(this);
 
-        if (answerAmount.getText().toString().equals("10203")) {
+        if (answerAmount.getText().toString().equals("150806")) { // чит-код на правильные ответы
             answerAmount.setText("");
             playerAnswers.clear();
             for (Map.Entry<Integer, Integer> entry: rightAnswers.entrySet())
@@ -260,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
                 level = new Level(level.imageTime, level.switchTime, level.allowedImages, amount, level.number);
 
-                start();
+                startGame();
             }
         } else {
             wrongAnswersCount++;

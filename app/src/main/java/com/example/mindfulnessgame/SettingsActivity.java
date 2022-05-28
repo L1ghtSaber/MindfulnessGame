@@ -1,15 +1,8 @@
 package com.example.mindfulnessgame;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import java.util.ArrayList;
 
@@ -28,9 +22,21 @@ public class SettingsActivity extends AppCompatActivity {
 
     static final String BACKGROUND_COLOR = "backgroundColor";
     static final String TEXT_BACKGROUND_COLOR = "textBackgroundColor";
+    static final String BUTTONS_SOUND_EFFECT = "buttonsSoundEffect";
+    static final String COLORBLIND_MODE = "colorblindMode";
+    static final String TIMER_CLASSIC_MODE = "timerClassicMode";
+    static final String TIMER_ENDLESS_MODE = "timerEndlessMode";
 
     ListView bgColors, textBgColors;
     ImageView chosenColor;
+    int[] optionSwitchIds = {
+            R.id.buttons_sound_effect_SC, R.id.colorblind_mode_SC,
+            R.id.timer_classic_mode_SC, R.id.timer_endless_mode_SC
+    };
+    int[] optionImageIds = {
+            R.id.buttons_sound_effect_IV, R.id.colorblind_mode_IV,
+            R.id.timer_classic_mode_IV, R.id.timer_endless_mode_IV
+    };
 
     static ArrayList<int[]> images = new ArrayList<>();
     Color[] colors = {
@@ -43,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
             new Color("#00e3c5"), new Color("#00baa1"), // бирюзовые
             new Color("#5c5c5c"), new Color("#2b2b2b")  // серые
     };
+    boolean[] options = new boolean[optionSwitchIds.length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,6 @@ public class SettingsActivity extends AppCompatActivity {
         bgColors = findViewById(R.id.bg_colors_LV);
         bgColors.setAdapter(new Color("").new Adapter(this, backgroundColors, chosenColor));
 
-
         Color[] textBackgroundColors = new Color[colors.length];
         for (int i = 0; i < textBackgroundColors.length; i++) textBackgroundColors[i] = new Color(colors[i].resource);
         String textBgColor = MainMenuActivity.preferences.getString(TEXT_BACKGROUND_COLOR, "#88008c");
@@ -78,16 +84,47 @@ public class SettingsActivity extends AppCompatActivity {
         chosenColor.setBackgroundColor(android.graphics.Color.parseColor(textBgColor));
         textBgColors = findViewById(R.id.text_bg_colors_LV);
         textBgColors.setAdapter(new Color("").new Adapter(this, textBackgroundColors, chosenColor));
+
+        options[0] = MainMenuActivity.preferences.getBoolean(BUTTONS_SOUND_EFFECT, true);
+        options[1] = MainMenuActivity.preferences.getBoolean(COLORBLIND_MODE, false);
+        options[2] = MainMenuActivity.preferences.getBoolean(TIMER_CLASSIC_MODE, true);
+        options[3] = MainMenuActivity.preferences.getBoolean(TIMER_ENDLESS_MODE, true);
+
+        for (int i = 0; i < optionSwitchIds.length; i++) {
+            SwitchCompat optionSwitch = findViewById(optionSwitchIds[i]);
+            ImageView optionImage = findViewById(optionImageIds[i]);
+
+            if (options[i]) {
+                optionSwitch.setChecked(true);
+                optionImage.setImageResource((i != 1) ? 0 : R.drawable.red_cross);
+            } else {
+                optionSwitch.setChecked(false);
+                optionImage.setImageResource((i != 1) ? R.drawable.red_cross : 0);
+            }
+
+            final int i1 = i;
+            optionSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    options[i1] = optionSwitch.isChecked();
+
+                    if (options[i1]) optionImage.setImageResource((i1 != 1) ? 0 : R.drawable.red_cross);
+                    else optionImage.setImageResource((i1 != 1) ? R.drawable.red_cross : 0);
+                }
+            });
+        }
     }
 
     public static void fillImages() {
-        images.add(new int[]{
-                R.drawable.yellow_square, R.drawable.orange_square, R.drawable.red_square,
-                R.drawable.blue_circle, R.drawable.blue_capsule, R.drawable.blue_elipse,
-                R.drawable.green_triangle_0, R.drawable.green_triangle_90, R.drawable.green_triangle_180,
-                R.drawable.purple_rhombus_0, R.drawable.purple_rhombus_90, R.drawable.cyan_hexagon_0,
-                R.drawable.cyan_hexagon_90, R.drawable.yellow_star, R.drawable.orange_star
-        });
+        images.clear();
+        if (!MainMenuActivity.preferences.getBoolean(COLORBLIND_MODE, false))
+            images.add(new int[]{
+                    R.drawable.yellow_square, R.drawable.orange_square, R.drawable.red_square,
+                    R.drawable.blue_circle, R.drawable.blue_capsule, R.drawable.blue_elipse,
+                    R.drawable.green_triangle_0, R.drawable.green_triangle_90, R.drawable.green_triangle_180,
+                    R.drawable.purple_rhombus_0, R.drawable.purple_rhombus_90, R.drawable.cyan_hexagon_0,
+                    R.drawable.cyan_hexagon_90, R.drawable.yellow_star, R.drawable.orange_star
+            });
         images.add(new int[]{
                 R.drawable.it_cube_logo, R.drawable.samsung_logo, R.drawable.it_school_logo,
                 R.drawable.windows_logo, R.drawable.java_logo, R.drawable.android_logo,
@@ -127,11 +164,20 @@ public class SettingsActivity extends AppCompatActivity {
         }
         MainMenuActivity.editor.putString(TEXT_BACKGROUND_COLOR, chosenColor);
 
+        MainMenuActivity.editor.putBoolean(BUTTONS_SOUND_EFFECT, options[0]);
+        MainMenuActivity.editor.putBoolean(COLORBLIND_MODE, options[1]);
+        MainMenuActivity.editor.putBoolean(TIMER_CLASSIC_MODE, options[2]);
+        MainMenuActivity.editor.putBoolean(TIMER_ENDLESS_MODE, options[3]);
+
         MainMenuActivity.editor.commit();
+
+        fillImages();
+
         finish();
     }
 
     class Color {
+
         String resource;
 
         boolean isSelected;
@@ -172,9 +218,11 @@ public class SettingsActivity extends AppCompatActivity {
                         chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
                     }
                 });
-                if (colors[position].isSelected) chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
+                if (colors[position].isSelected)
+                    chosenColor.setBackgroundColor(android.graphics.Color.parseColor(colors[position].resource));
                 return convertView;
             }
         }
     }
+
 }

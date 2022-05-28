@@ -26,6 +26,7 @@ public class MainMenuActivity extends AppCompatActivity {
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
 
+    static boolean buttonsSoundEffect;
     int levelToUnlockIM = 5;
 
     @Override
@@ -37,6 +38,8 @@ public class MainMenuActivity extends AppCompatActivity {
         preferences = getPreferences(MODE_PRIVATE);
         editor = preferences.edit();
 
+        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
+
         changeColors();
 
         SettingsActivity.fillImages();
@@ -47,6 +50,8 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
+
         changeColors();
 
         showStateOfEndlessMode();
@@ -55,6 +60,8 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
+
         changeColors();
 
         showStateOfEndlessMode();
@@ -63,6 +70,8 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
+
         changeColors();
 
         showStateOfEndlessMode();
@@ -72,7 +81,7 @@ public class MainMenuActivity extends AppCompatActivity {
         ImageButton endlessModeIB = findViewById(R.id.endless_mode_IB);
         TextView endlessModeTV = findViewById(R.id.endless_mode_TV);
         if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockIM) {
-            endlessModeIB.setImageResource(R.drawable.cross);
+            endlessModeIB.setImageResource(R.drawable.white_cross);
             endlessModeTV.setTextColor(Color.parseColor("#9e9e9e"));
         } else {
             endlessModeIB.setImageResource(0);
@@ -142,6 +151,6 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public static void playClickSound(Context context) {
-        MediaPlayer.create(context, R.raw.bubble_click).start();
+        if (buttonsSoundEffect) MediaPlayer.create(context, R.raw.bubble_click).start();
     }
 }
