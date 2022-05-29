@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,18 +75,6 @@ public class LevelsActivity extends AppCompatActivity {
         showBlockedLevels();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showBlockedLevels();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showBlockedLevels();
-    }
-
     public void setLevelNumbers() {
         for (int i = 0; i < levelNumberIds.length; i++) {
             String out = "" + (i + 1 + (currentTenLevels - 1) * 10);
@@ -122,6 +109,7 @@ public class LevelsActivity extends AppCompatActivity {
 
         // генерация текущего уровня по определённым правилам
         int number = chosenLevel + 10 * (currentTenLevels - 1);
+        chosenLevel = -1;
 
         int imageTime = 1250 / currentTenLevels - (10 * currentTenLevels * ((number + 1) % 10));
         if (imageTime <= 0) imageTime = 1;
@@ -135,10 +123,10 @@ public class LevelsActivity extends AppCompatActivity {
         for (int i = 0; i < currentTenLevels + ((number + 1) / 5); i++)
             images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
 
-        Intent main = new Intent(LevelsActivity.this, MainActivity.class);
-        main.putExtra(LEVEL, new Level(imageTime, switchTime, images, imagesAmount, number));
-        main.putExtra(MainMenuActivity.ENDLESS_MODE, false);
-        startActivity(main);
+        Intent game = new Intent(LevelsActivity.this, GameActivity.class);
+        game.putExtra(LEVEL, new Level(imageTime, switchTime, images, imagesAmount, number));
+        game.putExtra(MainMenuActivity.ENDLESS_MODE, false);
+        startActivity(game);
     }
 
     public void exitToMainMenu(View view) {

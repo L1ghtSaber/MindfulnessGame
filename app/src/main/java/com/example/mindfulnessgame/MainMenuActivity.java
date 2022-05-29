@@ -57,26 +57,6 @@ public class MainMenuActivity extends AppCompatActivity {
         showStateOfEndlessMode();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
-
-        changeColors();
-
-        showStateOfEndlessMode();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        buttonsSoundEffect = preferences.getBoolean(SettingsActivity.BUTTONS_SOUND_EFFECT, true);
-
-        changeColors();
-
-        showStateOfEndlessMode();
-    }
-
     public void showStateOfEndlessMode() {
         ImageButton endlessModeIB = findViewById(R.id.endless_mode_IB);
         TextView endlessModeTV = findViewById(R.id.endless_mode_TV);
@@ -92,7 +72,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void showHighScore() {
         TextView highScoreTV = findViewById(R.id.high_score_TV);
-        int highScore = preferences.getInt(MainActivity.HIGH_SCORE, 0);
+        int highScore = preferences.getInt(GameActivity.HIGH_SCORE, 0);
 
         highScoreTV.setBackground(AppCompatResources.getDrawable(this, R.drawable.rounded_shape));
         String out = "РЕКОРД: " + highScore + " ";
@@ -133,7 +113,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void startEndlessGame(View view) {
-        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockEM) {
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 1) - 1 < levelToUnlockEM) {
             Toast.makeText(this, "ПРОЙДИТЕ УРОВЕНЬ " + levelToUnlockEM + ",\nЧТОБЫ РАЗБЛОКИРОВАТЬ", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -142,12 +122,12 @@ public class MainMenuActivity extends AppCompatActivity {
 
         showHighScore();
 
-        Intent main = new Intent(this, MainActivity.class);
-        main.putExtra(LevelsActivity.LEVEL, new Level(1500, 1500,
+        Intent game = new Intent(this, GameActivity.class);
+        game.putExtra(LevelsActivity.LEVEL, new Level(1500, 1500,
                 new ArrayList<>(Collections.singletonList(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())))),
                 1, 0));
-        main.putExtra(ENDLESS_MODE, true);
-        startActivity(main);
+        game.putExtra(ENDLESS_MODE, true);
+        startActivity(game);
     }
 
     public static void playClickSound(Context context) {

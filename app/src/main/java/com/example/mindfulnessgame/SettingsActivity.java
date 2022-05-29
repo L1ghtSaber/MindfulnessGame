@@ -125,26 +125,31 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static void fillImages() { // метод для заполнения изображений
         images.clear();
+        images.add(new int[]{ // геометрические фигуры, различающиеся по форме или градусу поворота
+                R.drawable.blue_circle, R.drawable.blue_capsule, R.drawable.blue_elipse,
+                R.drawable.green_triangle_0, R.drawable.green_triangle_90, R.drawable.green_triangle_180,
+                R.drawable.purple_rhombus_0, R.drawable.purple_rhombus_90, R.drawable.cyan_hexagon_0,
+                R.drawable.cyan_hexagon_90
+        });
         if (!MainMenuActivity.preferences.getBoolean(COLORBLIND_MODE, false))
-            images.add(new int[]{
+            images.add(new int[]{ // геометрические фигуры, различающиеся по цвету
                     R.drawable.yellow_square, R.drawable.orange_square, R.drawable.red_square,
-                    R.drawable.blue_circle, R.drawable.blue_capsule, R.drawable.blue_elipse,
-                    R.drawable.green_triangle_0, R.drawable.green_triangle_90, R.drawable.green_triangle_180,
-                    R.drawable.purple_rhombus_0, R.drawable.purple_rhombus_90, R.drawable.cyan_hexagon_0,
-                    R.drawable.cyan_hexagon_90, R.drawable.yellow_star, R.drawable.orange_star
+                    R.drawable.yellow_star, R.drawable.orange_star, R.drawable.brown_pentagon,
+                    R.drawable.light_brown_pentagon, R.drawable.pink_rectangle, R.drawable.dark_pink_rectangle,
+                    R.drawable.light_pink_rectangle
             });
-        images.add(new int[]{
+        images.add(new int[]{ // логотипы
                 R.drawable.it_cube_logo, R.drawable.samsung_logo, R.drawable.it_school_logo,
                 R.drawable.windows_logo, R.drawable.java_logo, R.drawable.android_logo,
                 R.drawable.jetbrains_logo, R.drawable.discord_logo
         });
-        images.add(new int[]{
+        images.add(new int[]{ // просто предметы
                 R.drawable.alarm_clock, R.drawable.apple, R.drawable.bottle,
                 R.drawable.car, R.drawable.cup, R.drawable.pencil,
                 R.drawable.smartphone, R.drawable.table_lamp, R.drawable.tree,
                 R.drawable.book, R.drawable.box, R.drawable.laptop
         });
-        images.add(new int[]{
+        images.add(new int[]{ // игровые персонажи
                 R.drawable.freddy, R.drawable.isaac, R.drawable.limbo_boy,
                 R.drawable.jorji, R.drawable.rayman, R.drawable.sans,
                 R.drawable.steve, R.drawable.terraria_player, R.drawable.six

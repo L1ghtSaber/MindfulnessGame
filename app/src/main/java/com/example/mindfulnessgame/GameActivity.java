@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     static final String HIGH_SCORE = "highScore";
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         timerView = findViewById(R.id.timer_TV);
         attemptsLeft = findViewById(R.id.attempts_left_TV);
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         timerView.setBackgroundColor(Color.argb(0, 0, 0, 0));
                         timerView.setClickable(false);
 
-                        new ImageTimer(MainActivity.this).timer.start();
+                        new ImageTimer(GameActivity.this).timer.start();
 
                         cancel();
                     }
