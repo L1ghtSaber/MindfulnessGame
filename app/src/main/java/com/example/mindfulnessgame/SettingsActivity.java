@@ -44,6 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
             new Color("#2668ff"), new Color("#2403fc"), // синие
             new Color("#18d902"), new Color("#11ad00"), // зелёные
             new Color("#e30b00"), new Color("#ad0900"), // красные
+            new Color("#fc6f03"), new Color("#fc8a32"), // оранжевые
             new Color("#aa00e3"), new Color("#7c00c9"), // фиолетовые
             new Color("#00e3c5"), new Color("#00baa1"), // бирюзовые
             new Color("#5c5c5c"), new Color("#2b2b2b")  // серые
@@ -140,7 +141,13 @@ public class SettingsActivity extends AppCompatActivity {
         images.add(new int[]{
                 R.drawable.alarm_clock, R.drawable.apple, R.drawable.bottle,
                 R.drawable.car, R.drawable.cup, R.drawable.pencil,
-                R.drawable.smartphone, R.drawable.table_lamp, R.drawable.tree
+                R.drawable.smartphone, R.drawable.table_lamp, R.drawable.tree,
+                R.drawable.book, R.drawable.box, R.drawable.laptop
+        });
+        images.add(new int[]{
+                R.drawable.freddy, R.drawable.isaac, R.drawable.limbo_boy,
+                R.drawable.jorji, R.drawable.rayman, R.drawable.sans,
+                R.drawable.steve, R.drawable.terraria_player, R.drawable.six
         });
     }
 

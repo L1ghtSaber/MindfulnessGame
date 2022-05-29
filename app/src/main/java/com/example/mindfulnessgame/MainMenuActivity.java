@@ -133,12 +133,12 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void startEndlessGame(View view) {
-        playClickSound(this);
-
         if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockEM) {
             Toast.makeText(this, "ПРОЙДИТЕ УРОВЕНЬ " + levelToUnlockEM + ",\nЧТОБЫ РАЗБЛОКИРОВАТЬ", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        playClickSound(this);
 
         showHighScore();
 
