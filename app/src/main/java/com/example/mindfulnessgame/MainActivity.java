@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
-        } catch (IllegalStateException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             answerAmount.setText("0");
         }
 
@@ -303,6 +303,12 @@ public class MainActivity extends AppCompatActivity {
     public void changeAmount(View view) { // чтобы не писать вручную ответ,
         // можно воспользоваться кнопками прибавления и убавления
         MainMenuActivity.playClickSound(this);
+
+        try {
+            playerAnswers.get(currentAnswer).amount = Integer.parseInt(answerAmount.getText().toString());
+        } catch (NumberFormatException e) {
+            playerAnswers.get(currentAnswer).amount = 0;
+        }
 
         if (view.getId() == R.id.amount_minus_IB) playerAnswers.get(currentAnswer).amount--;
         else if (view.getId() == R.id.amount_plus_IB) playerAnswers.get(currentAnswer).amount++;

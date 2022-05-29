@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -128,7 +129,7 @@ public class LevelsActivity extends AppCompatActivity {
         int switchTime = 1250 / currentTenLevels - (20 * currentTenLevels * ((number + 1) % 10));
         if (switchTime <= 0) switchTime = 5;
 
-        int imagesAmount = 3 * currentTenLevels + number % 10 + (currentTenLevels - 1) / 10;
+        int imagesAmount = 3 * currentTenLevels + (number % 10);
 
         ArrayList<int[]> images = new ArrayList<>();
         for (int i = 0; i < currentTenLevels + ((number + 1) / 5); i++)
@@ -155,7 +156,7 @@ public class LevelsActivity extends AppCompatActivity {
         if (currentTenLevels < 1) currentTenLevels = maxTenLevels;
         else if (currentTenLevels > maxTenLevels) currentTenLevels = 1;
 
-        chosenLevel = -1; // чтобы не допустить читерства ;)
+        //chosenLevel = -1; // чтобы не допустить читерства ;)
 
         setLevelNumbers();
 

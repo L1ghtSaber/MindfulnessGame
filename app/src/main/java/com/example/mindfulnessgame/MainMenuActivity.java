@@ -80,7 +80,7 @@ public class MainMenuActivity extends AppCompatActivity {
     public void showStateOfEndlessMode() {
         ImageButton endlessModeIB = findViewById(R.id.endless_mode_IB);
         TextView endlessModeTV = findViewById(R.id.endless_mode_TV);
-        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 0) < levelToUnlockEM) {
+        if (preferences.getInt(LevelsActivity.CURRENT_UNLOCKED_LEVEL, 1) - 1 < levelToUnlockEM) {
             endlessModeIB.setImageResource(R.drawable.white_cross);
             endlessModeTV.setTextColor(Color.parseColor("#9e9e9e"));
         } else {
