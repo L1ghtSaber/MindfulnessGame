@@ -69,6 +69,24 @@ public class LevelsActivity extends AppCompatActivity {
         showBlockedLevels();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        showBlockedLevels();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showBlockedLevels();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showBlockedLevels();
+    }
+
     public void setLevelNumbers() {
         for (int i = 0; i < levelNumberIds.length; i++) {
             String out = "" + (i + 1 + (currentTenLevels - 1) * 10);
@@ -120,8 +138,6 @@ public class LevelsActivity extends AppCompatActivity {
         main.putExtra(LEVEL, new Level(imageTime, switchTime, images, imagesAmount, number));
         main.putExtra(MainMenuActivity.ENDLESS_MODE, false);
         startActivity(main);
-
-        finish();
     }
 
     public void exitToMainMenu(View view) {
