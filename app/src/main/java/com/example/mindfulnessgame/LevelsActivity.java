@@ -35,7 +35,7 @@ public class LevelsActivity extends AppCompatActivity {
 
     int chosenLevel = -1,
             currentTenLevels = 1, // текущий десяток уровней
-            maxTenLevels = 3;
+            maxTenLevels = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,34 +101,23 @@ public class LevelsActivity extends AppCompatActivity {
 
         if (chosenLevel == -1) return;
 
-        // генерация текущих десяти уровней по определённым правилам
-        Level[] levels = new Level[10];
+        // генерация текущего уровня по определённым правилам
+        int number = chosenLevel + 10 * (currentTenLevels - 1);
+
+        int imageTime = 1250 / currentTenLevels - (10 * currentTenLevels * ((number + 1) % 10));
+        if (imageTime <= 0) imageTime = 1;
+
+        int switchTime = 1250 / currentTenLevels - (20 * currentTenLevels * ((number + 1) % 10));
+        if (switchTime <= 0) switchTime = 5;
+
+        int imagesAmount = 3 * currentTenLevels + number % 10 + (currentTenLevels - 1) / 10;
+
         ArrayList<int[]> images = new ArrayList<>();
-        for (int i = 0; i < currentTenLevels; i++)
+        for (int i = 0; i < currentTenLevels + ((number + 1) / 5); i++)
             images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
-        for (int i = 0, imageTime = 1250 / currentTenLevels, switchTime = 1500 / currentTenLevels,
-             imagesAmount = 3 * currentTenLevels; i < levels.length; i++) {
-
-            levels[i] = new Level(imageTime, switchTime, images, imagesAmount, i + (currentTenLevels - 1) * 10);
-
-            imageTime -= 10 * currentTenLevels;
-            if (imageTime <= 0) imageTime = 5;
-
-            if ((i + 1) % 2 == 0) switchTime -= 20 * currentTenLevels;
-            if (switchTime <= 0) switchTime = 5;
-
-
-            if (i == 0 || i == 2 || i == 6) imagesAmount += 2;
-            else if (i == 4 || i == 8) imagesAmount += 3;
-
-            if ((i + 1) % 5 == 0) {
-                for (int j = 0; j < currentTenLevels; j++)
-                    images.add(SettingsActivity.images.get((int) (Math.random() * SettingsActivity.images.size())));
-            }
-        }
 
         Intent main = new Intent(LevelsActivity.this, MainActivity.class);
-        main.putExtra(LEVEL, levels[chosenLevel]);
+        main.putExtra(LEVEL, new Level(imageTime, switchTime, images, imagesAmount, number));
         main.putExtra(MainMenuActivity.ENDLESS_MODE, false);
         startActivity(main);
 
@@ -150,7 +139,7 @@ public class LevelsActivity extends AppCompatActivity {
         if (currentTenLevels < 1) currentTenLevels = maxTenLevels;
         else if (currentTenLevels > maxTenLevels) currentTenLevels = 1;
 
-        chosenLevel = -1; // чтобы не допустить читерства ;)
+        //chosenLevel = -1; // чтобы не допустить читерства ;)
 
         setLevelNumbers();
 

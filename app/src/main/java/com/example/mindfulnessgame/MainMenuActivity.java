@@ -27,7 +27,7 @@ public class MainMenuActivity extends AppCompatActivity {
     static SharedPreferences.Editor editor;
 
     static boolean buttonsSoundEffect; // условие для проигрывания звукового эффекта кнопок
-    int levelToUnlockEM = 5; // уровень, который нужно пройти, чтобы разблокировать бесконечный режим
+    int levelToUnlockEM = 10; // уровень, который нужно пройти, чтобы разблокировать бесконечный режим
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
