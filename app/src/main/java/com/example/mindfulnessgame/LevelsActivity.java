@@ -139,7 +139,7 @@ public class LevelsActivity extends AppCompatActivity {
         if (currentTenLevels < 1) currentTenLevels = maxTenLevels;
         else if (currentTenLevels > maxTenLevels) currentTenLevels = 1;
 
-        //chosenLevel = -1; // чтобы не допустить читерства ;)
+        chosenLevel = -1; // чтобы не допустить читерства ;)
 
         setLevelNumbers();
 
